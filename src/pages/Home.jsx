@@ -1,0 +1,493 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { api } from '../services/api';
+import { categories } from '../data/mockData';
+import ArticleCard from '../components/ArticleCard';
+import InfiniteImageScroll from '../components/InfiniteImageScroll';
+import CustomAlert from '../components/CustomAlert';
+import ArticleCardSkeleton from '../components/ArticleCardSkeleton';
+import { ArrowRight, TrendingUp, Sparkles, Zap, Award } from 'lucide-react';
+
+const Home = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [alert, setAlert] = useState({ show: false, type: 'success', message: '' });
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Get latest article safely
+  const sortedArticles = [...articles].sort((a, b) => b.publishedAt - a.publishedAt);
+  const latestArticle = sortedArticles.length > 0 ? sortedArticles[0] : null;
+  const otherArticles = latestArticle ? articles.filter(a => a.id !== latestArticle.id) : [];
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setIsLoading(true);
+      try {
+        const data = await api.articles.getAll();
+        if (Array.isArray(data)) {
+          setArticles(data);
+        } else {
+          console.warn("API did not return an array of articles:", data);
+          setArticles([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch articles", error);
+        setArticles([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail || !newsletterEmail.includes('@')) {
+      setAlert({
+        show: true,
+        type: 'error',
+        message: 'Veuillez entrer une adresse email valide'
+      });
+      return;
+    }
+
+    setIsSubscribing(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      // Get existing subscribers
+      const subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+      
+      // Check if already subscribed
+      const emailExists = subscribers.some(sub => sub.email === newsletterEmail);
+      if (emailExists) {
+        setAlert({
+          show: true,
+          type: 'warning',
+          message: 'Cette adresse email est déjà inscrite à notre newsletter'
+        });
+        setIsSubscribing(false);
+        return;
+      }
+
+      // Add new subscriber
+      subscribers.push({
+        email: newsletterEmail,
+        subscribedAt: new Date().toISOString(),
+        active: true
+      });
+      
+      localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers));
+      
+      setAlert({
+        show: true,
+        type: 'success',
+        message: '🎉 Merci de votre inscription ! Vous recevrez bientôt nos actualités.'
+      });
+      
+      setNewsletterEmail('');
+      setIsSubscribing(false);
+    }, 1500);
+  };
+
+  return (
+    <div className="relative overflow-hidden">
+      <CustomAlert 
+        show={alert.show}
+        type={alert.type}
+        message={alert.message}
+        onClose={() => setAlert({ ...alert, show: false })}
+      />
+
+      {/* Hero Section with Parallax Effect */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-primary-950">
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1600')] bg-cover bg-center" 
+               style={{
+                 transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
+                 transition: 'transform 0.3s ease-out'
+               }}
+          />
+        </div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/80 to-transparent"></div>
+        
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary-600/10 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </div>
+        
+        {/* Content */}
+        <div className="container-custom relative z-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div 
+              className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-primary-600/20 backdrop-blur-sm border border-primary-500/30 text-primary-300 text-sm font-bold uppercase tracking-wider mb-8"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Sparkles size={16} className="animate-pulse" />
+              Journal d'Informations et D'investigations paraissant à Porto-Novo   
+            </motion.div>
+            
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-serif font-bold leading-tight mb-6 text-white">
+              <span className="block mb-2">L'Information</span>
+              <span className="bg-gradient-to-r from-white via-primary-200 to-primary-400 bg-clip-text text-transparent">
+                Qui Fait la Différence
+              </span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-3xl mx-auto font-light">
+              Des analyses pointues, des reportages exclusifs et une vision claire sur les enjeux qui façonnent notre monde.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link to="/articles">
+                <motion.button 
+                  className="btn-primary group"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Découvrir nos articles
+                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.button>
+              </Link>
+              
+              <a href="#newsletter">
+                <motion.button 
+                  className="btn-secondary bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  S'abonner à la newsletter
+                </motion.button>
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Stats */}
+          {/* <motion.div 
+            className="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            {[
+              { label: 'Articles', value: '500+', icon: Award },
+              { label: 'Lecteurs', value: '50K+', icon: TrendingUp },
+              { label: 'Pays', value: '25+', icon: Zap }
+            ].map((stat, index) => (
+              <motion.div 
+                key={stat.label}
+                className="text-center group cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+              >
+                <stat.icon className="mx-auto mb-3 text-primary-400 group-hover:text-primary-300 transition-colors" size={32} />
+                <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.value}</div>
+                <div className="text-sm text-neutral-400 uppercase tracking-wider">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div> */}
+        </div>
+
+        {/* Scroll Indicator */}
+        {/* <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full p-1">
+            <motion.div 
+              className="w-1.5 h-1.5 bg-white rounded-full mx-auto"
+              animate={{ y: [0, 20, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </div>
+        </motion.div> */}
+      </section>
+
+      {/* LATEST ARTICLE IMAGES CAROUSEL */}
+      {latestArticle && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <InfiniteImageScroll article={latestArticle} />
+        </motion.div>
+      )}
+
+      {/* Categories Section */}
+      <section className="py-16 bg-white border-b border-neutral-100">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold font-serif mb-4">Explorez par Catégories</h2>
+            <div className="w-24 h-1 bg-primary-600 mx-auto rounded-full"></div>
+          </motion.div>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((category, index) => (
+              <motion.div
+                key={category}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <Link
+                  to={`/category/${category.toLowerCase()}`}
+                  className="block px-6 py-3 rounded-full bg-neutral-100 text-neutral-700 font-bold hover:bg-primary-600 hover:text-white transition-all shadow-sm hover:shadow-md"
+                >
+                  {category}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Article */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
+        
+        <div className="container-custom relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-between mb-12"
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-1 h-8 bg-gradient-to-b from-primary-600 to-primary-800 rounded-full"></div>
+                <h2 className="text-3xl md:text-4xl font-bold font-serif">
+                  Article <span className="gradient-text">Vedette</span>
+                </h2>
+              </div>
+              <p className="text-neutral-600">L'analyse la plus lue de la semaine</p>
+            </div>
+            <TrendingUp className="text-primary-600 animate-pulse-slow" size={48} />
+          </motion.div>
+          
+          {isLoading ? (
+            <ArticleCardSkeleton featured={true} />
+          ) : latestArticle ? (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <ArticleCard article={latestArticle} featured={true} />
+            </motion.div>
+          ) : (
+            <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
+              <p className="text-neutral-500 font-medium">Aucun article à la une disponible pour le moment.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Latest Articles Grid */}
+      <section className="py-24 bg-gradient-to-b from-neutral-50 to-white relative">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-between mb-12"
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-1 h-8 bg-gradient-to-b from-primary-600 to-primary-800 rounded-full"></div>
+                <h2 className="text-3xl md:text-4xl font-bold font-serif text-neutral-900">
+                  Dernières <span className="gradient-text">Publications</span>
+                </h2>
+              </div>
+              <p className="text-neutral-600">Restez informé des dernières actualités</p>
+            </div>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {isLoading ? (
+              [1, 2, 3].map((i) => <ArticleCardSkeleton key={i} />)
+            ) : otherArticles.length > 0 ? (
+              otherArticles.slice(0, 3).map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <ArticleCard article={article} />
+                </motion.div>
+              ))
+            ) : (
+             <div className="col-span-full text-center py-12">
+               <p className="text-neutral-500 font-medium">Aucun article publié pour le moment.</p>
+             </div>
+            )}
+          </div>
+
+          {otherArticles.length > 3 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex justify-center mt-12"
+            >
+              <Link to="/articles">
+                <motion.button
+                  className="btn-primary flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="relative z-10">
+                    Voir tous les articles ({otherArticles.length})
+                  </span>
+                  <ArrowRight size={20} />
+                </motion.button>
+              </Link>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section id="newsletter" className="py-32 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-950"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&q=80&w=1600')] bg-cover bg-center"></div>
+        </div>
+        
+        {/* Floating Orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        <div className="container-custom relative z-10">
+          <motion.div 
+            className="text-center max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              className="inline-flex items-center gap-2 py-2 px-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-bold uppercase tracking-wider mb-8"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Sparkles size={16} className="animate-pulse" />
+              Newsletter Exclusive
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-white">
+              Restez <span className="text-primary-200">Connecté</span>
+            </h2>
+            <p className="text-xl text-primary-100 mb-12 leading-relaxed">
+              Recevez chaque matin l'essentiel de l'actualité directement dans votre boîte mail.
+            </p>
+            
+            <motion.form 
+              onSubmit={handleNewsletterSubmit}
+              className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <input 
+                type="email" 
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Votre adresse email" 
+                className="flex-grow px-8 py-4 rounded-full text-neutral-900 bg-white/95 backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-white/30 font-medium shadow-xl"
+                required
+                disabled={isSubscribing}
+              />
+              <motion.button 
+                type="submit"
+                disabled={isSubscribing}
+                className="bg-neutral-900 text-white px-10 py-4 rounded-full font-bold hover:bg-neutral-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{ scale: isSubscribing ? 1 : 1.05 }}
+                whileTap={{ scale: isSubscribing ? 1 : 0.95 }}
+              >
+                {isSubscribing ? 'Inscription...' : "S'inscrire"}
+              </motion.button>
+            </motion.form>
+            
+            <p className="text-sm text-primary-200 mt-6">
+              ✓ Gratuit • ✓ Sans spam • ✓ Désabonnement facile
+            </p>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;
