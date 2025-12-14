@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const InfiniteImageScroll = ({ article }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [loadedImages, setLoadedImages] = useState(new Set());
 
   if (!article) return null;
 
@@ -13,6 +14,24 @@ const InfiniteImageScroll = ({ article }) => {
   const images = article.images && article.images.length > 0 
     ? article.images 
     : (article.image ? [article.image] : ['https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1600']);
+
+  // Précharger les images adjacentes pour une navigation fluide
+  useEffect(() => {
+    const preloadImage = (index) => {
+      if (index >= 0 && index < images.length && !loadedImages.has(index)) {
+        const img = new Image();
+        img.src = images[index];
+        img.onload = () => {
+          setLoadedImages(prev => new Set([...prev, index]));
+        };
+      }
+    };
+
+    // Précharger l'image actuelle et les images adjacentes
+    preloadImage(currentIndex);
+    preloadImage(currentIndex - 1);
+    preloadImage(currentIndex + 1);
+  }, [currentIndex, images, loadedImages]);
 
   const slideVariants = {
     enter: (direction) => ({
@@ -94,12 +113,14 @@ const InfiniteImageScroll = ({ article }) => {
             }}
             className="absolute inset-0 w-full h-full"
           >
-            {/* Image de fond */}
+            {/* Image de fond avec lazy loading */}
             <div className="absolute inset-0">
               <img 
                 src={images[currentIndex]} 
                 alt={`${article.title} - Image ${currentIndex + 1}`}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/60 to-transparent opacity-90"></div>
@@ -191,3 +212,4 @@ const InfiniteImageScroll = ({ article }) => {
 };
 
 export default InfiniteImageScroll;
+

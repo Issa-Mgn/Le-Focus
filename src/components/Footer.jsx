@@ -183,18 +183,17 @@ const Footer = () => {
           <p className="text-sm text-neutral-500">
             &copy; {currentYear} <span className="text-white font-semibold">Le Focus</span>. Tous droits réservés.
           </p>
-          <div className="flex gap-6 text-sm">
+          <div className="flex gap-3 text-sm">
             <Link to="/privacy" className="text-neutral-500 hover:text-primary-400 transition-colors">
-              Confidentialité
-            </Link>
-            <Link to="/terms" className="text-neutral-500 hover:text-primary-400 transition-colors">
-
-            </Link>
-            <Link to="/cookies" className="text-neutral-500 hover:text-primary-400 transition-colors">
               Cookies
             </Link>
+            <Link to="/terms" className="text-neutral-500 hover:text-primary-400 transition-colors">
+              Conditions 
+            </Link>
+            <Link to="/cookies" className="text-neutral-500 hover:text-primary-400 transition-colors">
+              Confidentialité
+            </Link>
             <Link to="/admin" className="text-neutral-500 hover:text-primary-400 transition-colors">
-              Administration
             </Link>
           </div>
         </motion.div>

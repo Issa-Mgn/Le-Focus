@@ -7,6 +7,7 @@ import ArticleCard from '../components/ArticleCard';
 import InfiniteImageScroll from '../components/InfiniteImageScroll';
 import CustomAlert from '../components/CustomAlert';
 import ArticleCardSkeleton from '../components/ArticleCardSkeleton';
+import PerformanceDebugWidget from '../components/PerformanceDebugWidget';
 import { ArrowRight, TrendingUp, Sparkles, Zap, Award } from 'lucide-react';
 
 const Home = () => {
@@ -17,10 +18,9 @@ const Home = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Get latest article safely
-  const sortedArticles = [...articles].sort((a, b) => b.publishedAt - a.publishedAt);
-  const latestArticle = sortedArticles.length > 0 ? sortedArticles[0] : null;
-  const otherArticles = latestArticle ? articles.filter(a => a.id !== latestArticle.id) : [];
+  // Trier les articles par date de publication (plus récent en premier)
+  const sortedArticles = [...articles].sort((a, b) => new Date(b.date) - new Date(a.date));
+
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -41,6 +41,15 @@ const Home = () => {
       }
     };
     fetchArticles();
+
+    // Charger les tests de performance en mode développement
+    if (process.env.NODE_ENV === 'development') {
+      import('../utils/performanceTests').then(module => {
+        window.performanceTests = module;
+        console.log('%c📊 Tests de performance chargés!', 'color: #DC2626; font-weight: bold;');
+        console.log('Exécutez: %cwindow.performanceTests.runAllTests()', 'color: #2563EB; font-weight: bold;');
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -110,6 +119,9 @@ const Home = () => {
         message={alert.message}
         onClose={() => setAlert({ ...alert, show: false })}
       />
+
+      {/* Performance Debug Widget (Dev Only) */}
+      <PerformanceDebugWidget />
 
       {/* Hero Section with Parallax Effect */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-primary-950">
@@ -248,19 +260,19 @@ const Home = () => {
       </section>
 
       {/* LATEST ARTICLE IMAGES CAROUSEL */}
-      {latestArticle && (
+      {sortedArticles.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <InfiniteImageScroll article={latestArticle} />
+          <InfiniteImageScroll article={sortedArticles[0]} />
         </motion.div>
       )}
 
       {/* Categories Section */}
-      <section className="py-16 bg-white border-b border-neutral-100">
+      <section className="py-16 bg-white border-b border-neutral-100 overflow-hidden">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -273,73 +285,57 @@ const Home = () => {
             <div className="w-24 h-1 bg-primary-600 mx-auto rounded-full"></div>
           </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((category, index) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-              >
+          {/* Scrolling Categories Container */}
+          <div className="relative cursor-grab active:cursor-grabbing">
+            {/* Gradient Overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+            
+            {/* Scrolling Animation with Drag */}
+            <motion.div
+              className="flex gap-4"
+              drag="x"
+              dragConstraints={{ left: -2000, right: 0 }}
+              dragElastic={0.1}
+              dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+              animate={{
+                x: [0, -1000],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 20,
+                  ease: "linear",
+                },
+              }}
+              whileHover={{ 
+                transition: { duration: 0 } // Pause animation on hover
+              }}
+              whileTap={{ 
+                cursor: "grabbing",
+                transition: { duration: 0 } // Pause animation while dragging
+              }}
+            >
+              {/* Duplicate categories for infinite scroll effect */}
+              {[...categories, ...categories, ...categories].map((category, index) => (
                 <Link
+                  key={`${category}-${index}`}
                   to={`/category/${category.toLowerCase()}`}
-                  className="block px-6 py-3 rounded-full bg-neutral-100 text-neutral-700 font-bold hover:bg-primary-600 hover:text-white transition-all shadow-sm hover:shadow-md"
+                  className="flex-shrink-0 px-8 py-4 rounded-full bg-gradient-to-r from-neutral-100 to-neutral-50 text-neutral-700 font-bold hover:from-primary-600 hover:to-primary-700 hover:text-white transition-all shadow-sm hover:shadow-lg hover:scale-105 whitespace-nowrap border border-neutral-200 hover:border-primary-600"
+                  draggable="false"
                 >
                   {category}
                 </Link>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Featured Article */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-        
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-between mb-12"
-          >
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-1 h-8 bg-gradient-to-b from-primary-600 to-primary-800 rounded-full"></div>
-                <h2 className="text-3xl md:text-4xl font-bold font-serif">
-                  Article <span className="gradient-text">Vedette</span>
-                </h2>
-              </div>
-              <p className="text-neutral-600">L'analyse la plus lue de la semaine</p>
-            </div>
-            <TrendingUp className="text-primary-600 animate-pulse-slow" size={48} />
-          </motion.div>
-          
-          {isLoading ? (
-            <ArticleCardSkeleton featured={true} />
-          ) : latestArticle ? (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <ArticleCard article={latestArticle} featured={true} />
-            </motion.div>
-          ) : (
-            <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
-              <p className="text-neutral-500 font-medium">Aucun article à la une disponible pour le moment.</p>
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* Latest Articles Grid */}
-      <section className="py-24 bg-gradient-to-b from-neutral-50 to-white relative">
+      <section className="py-20 bg-gradient-to-b from-neutral-50 to-white relative">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -359,11 +355,11 @@ const Home = () => {
             </div>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-5xl mx-auto">
             {isLoading ? (
-              [1, 2, 3].map((i) => <ArticleCardSkeleton key={i} />)
-            ) : otherArticles.length > 0 ? (
-              otherArticles.slice(0, 3).map((article, index) => (
+              [1, 2, 3, 4].map((i) => <ArticleCardSkeleton key={i} />)
+            ) : sortedArticles.length > 0 ? (
+              sortedArticles.slice(0, 4).map((article, index) => (
                 <motion.div
                   key={article.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -381,7 +377,7 @@ const Home = () => {
             )}
           </div>
 
-          {otherArticles.length > 3 && (
+          {sortedArticles.length > 4 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -396,7 +392,7 @@ const Home = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="relative z-10">
-                    Voir tous les articles ({otherArticles.length})
+                    Voir tous les articles ({sortedArticles.length})
                   </span>
                   <ArrowRight size={20} />
                 </motion.button>

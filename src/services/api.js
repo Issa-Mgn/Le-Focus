@@ -33,9 +33,27 @@ const safeDate = (dateStr) => {
     }
 };
 
+// Optimiser les URLs d'images pour de meilleures performances
+const optimizeImageUrl = (url, options = {}) => {
+    if (!url) return null;
+
+    const { width = 1200, quality = 80, format = 'auto' } = options;
+
+    // Si c'est une URL Unsplash, ajouter les paramètres d'optimisation
+    if (url.includes('unsplash.com')) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}w=${width}&q=${quality}&fm=${format}&fit=crop`;
+    }
+
+    // Si c'est une URL Cloudinary ou autre CDN, on pourrait ajouter d'autres optimisations
+    // Pour l'instant, retourner l'URL telle quelle
+    return url;
+};
+
+
 // LocalStorage Cache
 const CACHE_KEY = 'focus_articles_cache';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes - Optimisé pour de meilleures performances
 
 export const api = {
     auth: {
@@ -100,7 +118,10 @@ export const api = {
                     .filter(a => a && typeof a === 'object')
                     .map(a => ({
                         ...a,
-                        images: [a.cover_image_url, ...(a.gallery_image_urls || [])].filter(Boolean),
+                        images: [
+                            optimizeImageUrl(a.cover_image_url, { width: 1200, quality: 85 }),
+                            ...(a.gallery_image_urls || []).map(url => optimizeImageUrl(url, { width: 1200, quality: 85 }))
+                        ].filter(Boolean),
                         pdf: a.pdf_url,
                         views: a.views || 0,
                         date: safeDate(a.published_at || a.created_at || a.date),
@@ -132,7 +153,10 @@ export const api = {
 
                 return {
                     ...a,
-                    images: [a.cover_image_url, ...(a.gallery_image_urls || [])].filter(Boolean),
+                    images: [
+                        optimizeImageUrl(a.cover_image_url, { width: 1600, quality: 90 }),
+                        ...(a.gallery_image_urls || []).map(url => optimizeImageUrl(url, { width: 1600, quality: 90 }))
+                    ].filter(Boolean),
                     pdf: a.pdf_url,
                     views: a.views || 0,
                     date: safeDate(a.published_at || a.created_at || a.date),

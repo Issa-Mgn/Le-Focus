@@ -374,7 +374,7 @@ const ArticleDetailContent = () => {
             <h3 className="text-2xl font-bold font-serif mb-8 border-l-4 border-primary-600 pl-4">
               Articles Similaires
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-5xl mx-auto">
               {similarArticles.map(article => (
                 <ArticleCard key={article.id} article={article} />
               ))}
@@ -512,7 +512,7 @@ const OtherArticlesSection = ({ currentArticleId }) => {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-5xl mx-auto">
         {displayedArticles.map((article, index) => (
           <motion.div
             key={article.id}
