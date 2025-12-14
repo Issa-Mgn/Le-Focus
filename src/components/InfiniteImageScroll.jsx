@@ -77,14 +77,29 @@ const InfiniteImageScroll = ({ article }) => {
   return (
     <div className="bg-neutral-900 pb-8">
       <div className="container-custom py-6">
-         <h2 className="text-xl md:text-2xl font-serif font-bold text-white flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-            <span className="text-primary-400">Dernier Article :</span> 
+         <motion.h2 
+           className="text-xl md:text-2xl font-serif font-bold text-white flex items-center gap-3"
+           initial={{ opacity: 0, x: -20 }}
+           animate={{ opacity: 1, x: 0 }}
+           transition={{ duration: 0.5 }}
+         >
+            <motion.span 
+              className="w-2 h-2 rounded-full bg-primary-500"
+              animate={{ 
+                scale: [1, 1.3, 1],
+                opacity: [1, 0.5, 1]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity 
+              }}
+            />
+            <span className="text-primary-400">Actualités:</span> 
             <span className="truncate">{article.title}</span>
-         </h2>
+         </motion.h2>
       </div>
 
-      <div className="relative w-full h-[450px] overflow-hidden group cursor-grab active:cursor-grabbing">
+      <div className="relative w-full h-[450px] md:h-[500px] overflow-hidden group cursor-grab active:cursor-grabbing">
         
         {/* Carrousel d'images */}
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -122,47 +137,71 @@ const InfiniteImageScroll = ({ article }) => {
                 loading="lazy"
                 decoding="async"
               />
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/60 to-transparent opacity-90"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/50 to-transparent"></div>
+              {/* Overlay Gradient - Réduit pour mieux voir l'image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"></div>
             </div>
 
-            {/* Contenu superposé (qui bouge avec le slide) */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* Contenu superposé - En bas à gauche */}
+            <div className="absolute bottom-0 left-0 right-0 pb-8 md:pb-12">
                 <div className="container-custom w-full px-4 md:px-8">
-                    <div className="max-w-4xl mx-auto text-center md:text-left">
-                        {/* Badge */}
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600/90 text-white text-xs font-bold uppercase tracking-wider mb-6 drop-shadow-md backdrop-blur-md border border-white/10">
+                    <div className="max-w-3xl text-left">
+                        {/* Badge - Amélioré */}
+                        <motion.div 
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-600/95 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider mb-4 drop-shadow-lg border border-primary-500/30"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                        >
                             <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                            {article.category || 'A la Une'}
-                        </div>
+                            {article.category || 'À la Une'}
+                        </motion.div>
 
-                        {/* Titre */}
-                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-4 leading-tight drop-shadow-lg">
+                        {/* Titre - Amélioré */}
+                        <motion.h2 
+                          className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-white mb-3 leading-tight drop-shadow-2xl"
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                        >
                             {article.title}
-                        </h2>
+                        </motion.h2>
 
-                        {/* Résumé */}
-                        <p className="text-neutral-200 text-base md:text-lg mb-6 line-clamp-2 max-w-2xl drop-shadow-md">
+                        {/* Résumé - Amélioré */}
+                        <motion.p 
+                          className="text-neutral-200 text-sm md:text-base mb-5 line-clamp-2 max-w-2xl drop-shadow-lg"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.4 }}
+                        >
                             {article.excerpt}
-                        </p>
+                        </motion.p>
 
-                        {/* Actions */}
-                        <div className="flex flex-col md:flex-row items-center gap-6 text-white/90">
+                        {/* Actions - Amélioré */}
+                        <motion.div 
+                          className="flex flex-wrap items-center gap-3 text-white/90"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
+                        >
                             <Link to={`/article/${article.id}`}>
-                                <button className="flex items-center gap-2 bg-white text-neutral-950 px-8 py-3 rounded-full font-bold hover:bg-neutral-200 transition-colors shadow-lg hover:shadow-white/20 active:scale-95 transform whitespace-nowrap">
+                                <motion.button 
+                                  className="flex items-center gap-2 bg-white text-neutral-950 px-6 py-3 rounded-full font-bold hover:bg-neutral-100 transition-all shadow-xl hover:shadow-2xl hover:shadow-white/20 active:scale-95 transform whitespace-nowrap text-sm md:text-base"
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
                                     Lire l'article
                                     <ArrowUpRight size={18} />
-                                </button>
+                                </motion.button>
                             </Link>
 
                             {images.length > 1 && (
-                                <div className="flex items-center gap-2 text-sm font-medium bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm border border-white/10 whitespace-nowrap">
+                                <div className="flex items-center gap-2 text-xs md:text-sm font-medium bg-black/40 backdrop-blur-sm px-4 py-2.5 rounded-full border border-white/20 whitespace-nowrap shadow-lg">
                                     <ImageIcon size={16} />
                                     <span>Image {currentIndex + 1} / {images.length}</span>
                                 </div>
                             )}
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </div>
@@ -170,36 +209,42 @@ const InfiniteImageScroll = ({ article }) => {
         </AnimatePresence>
 
 
-        {/* Navigation Arrows (Only if multiple images) */}
+        {/* Navigation Arrows (Only if multiple images) - Amélioré */}
         {images.length > 1 && (
           <>
-            <button 
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-neutral-900 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 md:-translate-x-4 md:group-hover:translate-x-0"
+            <motion.button 
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-neutral-900 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-xl"
               onClick={() => paginate(-1)}
               aria-label="Image précédente"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ArrowLeft size={24} />
-            </button>
-            <button 
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-neutral-900 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 md:translate-x-4 md:group-hover:translate-x-0"
+            </motion.button>
+            <motion.button 
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-neutral-900 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-xl"
               onClick={() => paginate(1)}
               aria-label="Image suivante"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ArrowRight size={24} />
-            </button>
+            </motion.button>
 
-            {/* Dots Indicator */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            {/* Dots Indicator - Amélioré */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2.5 z-20 bg-black/30 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/10">
               {images.map((_, index) => (
-                <button
+                <motion.button
                   key={index}
                   onClick={() => {
                     setDirection(index > currentIndex ? 1 : -1);
                     setCurrentIndex(index);
                   }}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
+                    index === currentIndex ? 'w-8 bg-primary-500' : 'w-1.5 bg-white/50 hover:bg-white/80'
                   }`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                   aria-label={`Voir image ${index + 1}`}
                 />
               ))}
@@ -212,4 +257,3 @@ const InfiniteImageScroll = ({ article }) => {
 };
 
 export default InfiniteImageScroll;
-
