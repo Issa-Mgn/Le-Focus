@@ -110,7 +110,7 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-1">
               {/* Accueil */}
               {navLinks.slice(0, 2).map((link) => {
-                const Icon = link.icon;
+
                 const isActive = location.pathname === link.to;
                 
                 return (
@@ -129,7 +129,7 @@ const Navbar = () => {
                       whileHover={{ y: -2 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      <Icon size={16} className={isActive ? "animate-pulse" : ""} />
+
                       <span className="uppercase tracking-wide">{link.label}</span>
                     </motion.div>
                     
@@ -162,7 +162,7 @@ const Navbar = () => {
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 400 }}
                 >
-                  <NotebookText size={16} />
+
                   <span>Catégories</span>
                   <motion.div
                     animate={{ rotate: showCategories ? 180 : 0 }}
@@ -215,7 +215,7 @@ const Navbar = () => {
 
               {/* Contact et À propos */}
               {navLinks.slice(2).map((link) => {
-                const Icon = link.icon;
+
                 const isActive = location.pathname === link.to;
                 
                 return (
@@ -234,7 +234,7 @@ const Navbar = () => {
                       whileHover={{ y: -2 }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      <Icon size={16} className={isActive ? "animate-pulse" : ""} />
+
                       <span className="uppercase tracking-wide">{link.label}</span>
                     </motion.div>
                     
