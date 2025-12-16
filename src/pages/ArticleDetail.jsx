@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, User, Download, ArrowLeft, ArrowRight, Share2, Loader2, X, Check, Maximize2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Calendar, User, Download, ArrowLeft, ArrowRight, Share2, Loader2, X, Check, Maximize2, Bookmark, Eye, Moon, Sun, Type, MoveLeft, SunMoon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
 import ArticleDetailSkeleton from '../components/ArticleDetailSkeleton';
+import CommentsSection from '../components/CommentsSection';
+import AudioPlayer from '../components/AudioPlayer';
+import { useBookmarks } from '../hooks/useBookmarks';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -89,6 +92,35 @@ const ArticleDetailContent = () => {
 
 
 
+  /* New Features Hooks */
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const [zenMode, setZenMode] = useState(false);
+  const [zenSettings, setZenSettings] = useState({
+    fontSize: 'text-lg', // text-base, text-lg, text-xl
+    theme: 'light', // light, sepia, dark
+    width: 'max-w-3xl' // max-w-2xl, max-w-3xl, max-w-4xl
+  });
+
+  const isSaved = article ? isBookmarked(article.id) : false;
+
+  const handleToggleBookmark = () => {
+    if (article) {
+        toggleBookmark(article);
+    }
+  };
+
+  const toggleZenMode = () => setZenMode(!zenMode);
+
+  // Zen Mode Classes
+  const getZenThemeClass = () => {
+    switch (zenSettings.theme) {
+        case 'sepia': return 'bg-[#f4ecd8] text-[#5b4636]';
+        case 'dark': return 'bg-[#1a1a1a] text-[#e0e0e0]';
+        default: return 'bg-white text-neutral-900';
+    }
+  };
+  
+  // Existing sharing logic...
   const [isSharing, setIsSharing] = React.useState(false); 
 
   const handleShare = async () => {
@@ -173,23 +205,64 @@ const ArticleDetailContent = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextImage, prevImage, lightboxOpen]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (article && article.pdf) {
       setDownloading(true);
       
-      // Increment download count
-      api.articles.incrementDownloads(article.id);
+      try {
+        // Increment download count
+        // Note: we don't await this to speed up the UI response
+        api.articles.incrementDownloads(article.id);
 
-      // Simulate download delay
-      setTimeout(() => {
+        const date = new Date();
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const dateStr = `${day}${month}${year}`;
+        const fileName = `Le_focus_${dateStr}.pdf`;
+
+        // Attempt to fetch the file as a blob to force the filename
+        // This solves the issue where cross-origin links ignore the download attribute
+        const response = await fetch(article.pdf);
+        if (!response.ok) throw new Error("Network response was not ok");
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        setTimeout(() => {
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }, 100);
+        
+      } catch (error) {
+        console.error("Download failed or CORS error, falling back to direct link:", error);
+        
+        // Fallback: Direct link (Filename might not persist if cross-origin, but better than nothing)
         const link = document.createElement('a');
         link.href = article.pdf;
-        link.download = `${article.title}.pdf`;
+        
+        const date = new Date();
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const dateStr = `${day}${month}${year}`;
+        
+        link.setAttribute('download', `Le_focus_${dateStr}.pdf`);
+        link.setAttribute('target', '_blank');
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+      } finally {
         setDownloading(false);
-      }, 1500);
+      }
     } else {
       alert("Aucun fichier PDF disponible pour cet article.");
     }
@@ -309,28 +382,51 @@ const ArticleDetailContent = () => {
 
 
       <div className="container-custom relative z-10 -mt-10">
-        <div className="bg-white rounded-xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto overflow-hidden">
+        <div className="bg-white rounded-xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto overflow-hidden relative">
+          
           {/* Actions Bar */}
-          <div className="flex justify-between items-center border-b border-neutral-100 pb-8 mb-8">
-            <div className="flex gap-4">
+          <div className="flex flex-wrap justify-between items-center border-b border-neutral-100 pb-8 mb-8 gap-4">
+            <div className="flex gap-3">
               <button 
                 onClick={handleDownload}
                 disabled={downloading}
-                className="flex items-center gap-2 bg-primary-50 text-primary-700 px-4 py-2 rounded-lg font-medium hover:bg-primary-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 bg-neutral-50 text-neutral-700 px-4 py-2 rounded-lg font-medium hover:bg-neutral-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {downloading ? (
                   <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Téléchargement...
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>PDF</span>
                   </>
                 ) : (
                   <>
-                    <Download size={18} />
-                    Télécharger PDF
+                    <Download size={16} />
+                    <span>PDF</span>
                   </>
                 )}
               </button>
+              
+              <button
+                onClick={handleToggleBookmark}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all text-sm ${
+                    isSaved 
+                    ? 'bg-primary-50 text-primary-700' 
+                    : 'bg-neutral-50 text-neutral-700 hover:bg-neutral-100'
+                }`}
+              >
+                <Bookmark size={16} fill={isSaved ? "currentColor" : "none"} />
+                <span>{isSaved ? 'Sauvegardé' : 'Sauvegarder'}</span>
+              </button>
+              
+              <button
+                onClick={toggleZenMode}
+                className="flex items-center gap-2 bg-neutral-50 text-neutral-700 px-4 py-2 rounded-lg font-medium hover:bg-neutral-100 transition-colors text-sm"
+                title="Mode Lecture"
+              >
+                <Eye size={16} />
+                <span className="hidden sm:inline">Mode Zen</span>
+              </button>
             </div>
+            
             <button 
               onClick={handleShare}
               disabled={isSharing}
@@ -344,17 +440,25 @@ const ArticleDetailContent = () => {
               ) : (
                 <Share2 size={20} />
               )}
-              {isCopied && <span className="text-sm text-green-600 font-medium">Lien copié !</span>}
             </button>
           </div>
 
-          {/* Content */}
+          {/* Audio Player */}
+          {article && (
+            <div className="mb-8">
+                <AudioPlayer 
+                    text={`${article.excerpt ? article.excerpt + '. ' : ''}${article.paragraphs ? article.paragraphs.join(' ') : (article.content || '')}`} 
+                    title="" 
+                />
+            </div>
+          )}
+
+          {/* Regular Article Content */}
           <article className="prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-bold prose-a:text-primary-600 hover:prose-a:text-primary-700 break-words w-full">
             <p className="lead text-xl text-neutral-600 mb-8 font-serif italic break-words">
               {article.excerpt}
             </p>
             <div className="text-neutral-800 leading-relaxed space-y-6">
-              {/* Display paragraphs if available, otherwise fallback to content */}
               {article.paragraphs && article.paragraphs.length > 0 ? (
                 article.paragraphs.map((paragraph, index) => (
                   <p key={index} className="text-lg leading-relaxed break-words">
@@ -367,6 +471,117 @@ const ArticleDetailContent = () => {
             </div>
           </article>
         </div>
+
+        {/* ZEN MODE OVERLAY */}
+        <AnimatePresence>
+            {zenMode && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[9999] bg-black overscroll-none"
+                >
+                    {/* Floating Close Button (Fixed Top Right) */}
+                    <button
+                        onClick={toggleZenMode}
+                        className="fixed top-6 right-6 z-[10000] p-3 text-white/50 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all backdrop-blur-sm"
+                        title="Fermer"
+                    >
+                        <X size={24} />
+                    </button>
+
+                    {/* Floating Controls Toolbar (Fixed Bottom) */}
+                    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[10000] flex items-center gap-2 sm:gap-4 rounded-full px-6 py-3 bg-neutral-900/90 backdrop-blur-xl border border-white/10 shadow-2xl text-white">
+                        {/* Theme Toggles */}
+                        <button 
+                            onClick={() => setZenSettings({...zenSettings, theme: 'light'})}
+                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'light' ? 'bg-white text-black' : 'hover:bg-white/10 text-white/70'}`}
+                            title="Thème Clair"
+                        >
+                            <Sun size={20} />
+                            <span className="sr-only">Clair</span>
+                        </button>
+                        <button 
+                            onClick={() => setZenSettings({...zenSettings, theme: 'sepia'})}
+                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'sepia' ? 'bg-[#d8cba9] text-[#5b4636]' : 'hover:bg-white/10 text-white/70'}`}
+                            title="Thème Sépia"
+                        >
+                            <SunMoon size={27} />
+                            <span className="sr-only">Sépia</span>
+                        </button>
+                        <button 
+                            onClick={() => setZenSettings({...zenSettings, theme: 'dark'})}
+                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'dark' ? 'bg-neutral-800 border border-white/20' : 'hover:bg-white/10 text-white/70'}`}
+                            title="Thème Sombre"
+                        >
+                            <Moon size={20} />
+                            <span className="sr-only">Sombre</span>
+                        </button>
+                        
+                        <div className="w-px h-8 bg-white/20 mx-2"></div>
+                        
+                        {/* Font Size */}
+                        <button 
+                            onClick={() => setZenSettings(s => ({...s, fontSize: s.fontSize === 'text-base' ? 'text-lg' : s.fontSize === 'text-lg' ? 'text-xl' : 'text-base'}))}
+                            className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center w-10 text-white/90"
+                            title="Changer la taille"
+                        >
+                            <Type size={20} />
+                            <span className="text-xs ml-0.5 font-bold align-top">
+                                {zenSettings.fontSize === 'text-base' ? '1x' : zenSettings.fontSize === 'text-lg' ? '2x' : '3x'}
+                            </span>
+                        </button>
+                    </div>
+
+                    {/* Scrollable Content Container */}
+                    <div className="h-full overflow-y-auto">
+                        <div className={`min-h-screen ${zenSettings.width} mx-auto transition-all duration-300 py-12 md:py-20 relative`}>
+                            {/* The 'Paper' */}
+                            <div className={`min-h-screen shadow-2xl p-8 md:p-16 ${getZenThemeClass()} rounded-lg relative`}>
+                                
+                                {/* Zen Content */}
+                                <article className={`prose max-w-none ${zenSettings.theme === 'dark' ? 'prose-invert' : ''}`}>
+                                    <h1 className="font-serif text-4xl md:text-6xl font-bold mb-8 leading-tight text-center pt-8">
+                                        {article.title}
+                                    </h1>
+                                    <p className="text-xl md:text-2xl opacity-80 mb-12 font-serif italic text-center max-w-2xl mx-auto leading-relaxed">
+                                        {article.excerpt}
+                                    </p>
+                                    <div className="flex justify-center mb-12 opacity-50">
+                                        <span className="h-px w-24 bg-current"></span>
+                                    </div>
+                                    <div className={`${zenSettings.fontSize} leading-loose space-y-8 opacity-90 text-justify pb-24`}>
+                                        {article.paragraphs && article.paragraphs.length > 0 ? (
+                                            article.paragraphs.map((paragraph, index) => (
+                                            <p key={index}>
+                                                {paragraph}
+                                            </p>
+                                            ))
+                                        ) : (
+                                            <p>{article.content}</p>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="border-t border-current/10 pt-12 pb-8 text-center opacity-60 text-sm">
+                                        <button 
+                                            onClick={toggleZenMode}
+                                            className="flex items-center gap-2 mx-auto px-8 py-3 rounded-full border border-current hover:bg-current hover:text-inherit transition-all font-bold text-lg"
+                                            style={{ color: 'inherit' }}
+                                        >
+                                            <X size={24} />
+                                            Fermer la lecture
+                                        </button>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
+        {/* Comments Section */}
+        {article && <CommentsSection articleId={article.id} />}
 
         {/* Similar Articles */}
         {similarArticles.length > 0 && (

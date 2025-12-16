@@ -15,9 +15,11 @@ import DebugArticles from './pages/DebugArticles';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminNewArticle from './pages/AdminNewArticle';
+import AdminEditArticle from './pages/AdminEditArticle';
 import AdminArticles from './pages/AdminArticles';
 import AdminSettings from './pages/AdminSettings';
 import OrderInsertion from './pages/OrderInsertion';
+import Bookmarks from './pages/Bookmarks';
 import Loader from './components/Loader';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -54,6 +56,7 @@ function AppRoutes() {
       <Route path="/about" element={<MainRoute><About /></MainRoute>} />
       <Route path="/contact" element={<MainRoute><Contact /></MainRoute>} />
       <Route path="/order-insertion" element={<MainRoute><OrderInsertion /></MainRoute>} />
+      <Route path="/bookmarks" element={<MainRoute><Bookmarks /></MainRoute>} />
       <Route path="/debug" element={<DebugArticles />} />
       
       {/* Admin Login */}
@@ -81,6 +84,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <AdminRoute><AdminNewArticle /></AdminRoute>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/edit/:id" 
+        element={
+          <ProtectedRoute>
+            <AdminRoute><AdminEditArticle /></AdminRoute>
           </ProtectedRoute>
         } 
       />

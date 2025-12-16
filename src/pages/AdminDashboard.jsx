@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Eye, Download, FileText, TrendingUp, MoreHorizontal } from 'lucide-react';
+import { Eye, Download, FileText, TrendingUp, MoreHorizontal, Edit } from 'lucide-react';
 import AdminDashboardSkeleton from '../components/AdminDashboardSkeleton';
 
 const AdminDashboard = () => {
@@ -168,30 +169,40 @@ const AdminDashboard = () => {
           <table className="w-full text-sm text-left">
             <thead className="bg-neutral-50 text-neutral-500 uppercase text-xs">
               <tr>
-                <th className="px-6 py-4 font-medium">Titre</th>
+                <th className="px-4 md:px-6 py-4 font-medium text-xs md:text-sm">Titre</th>
                 <th className="px-6 py-4 font-medium hidden md:table-cell">Auteur</th>
                 <th className="px-6 py-4 font-medium hidden sm:table-cell">Date</th>
-                <th className="px-6 py-4 font-medium">Statut</th>
-                <th className="px-6 py-4 font-medium">Actions</th>
+                <th className="px-6 py-4 font-medium hidden sm:table-cell">Statut</th>
+                <th className="px-4 md:px-6 py-4 font-medium text-xs md:text-sm text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-100">
               {articles.map((article) => (
                 <tr key={article.id} className="hover:bg-neutral-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-neutral-900">
-                     <div className="truncate max-w-[150px] md:max-w-xs" title={article.title}>{article.title}</div>
+                  <td className="px-4 md:px-6 py-4 font-medium text-neutral-900">
+                     <div className="truncate max-w-[120px] sm:max-w-xs text-xs md:text-sm" title={article.title}>{article.title}</div>
+                     <div className="md:hidden text-[10px] text-neutral-500 mt-1">{article.date || article.publishedAt}</div>
                   </td>
                   <td className="px-6 py-4 text-neutral-600 hidden md:table-cell">{article.author}</td>
                   <td className="px-6 py-4 text-neutral-600 hidden sm:table-cell">{article.date || article.publishedAt}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 hidden sm:table-cell">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Publié
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <button className="text-neutral-400 hover:text-neutral-600">
-                      <MoreHorizontal size={18} />
-                    </button>
+                  <td className="px-4 md:px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link 
+                        to={`/admin/edit/${article.id}`}
+                        className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                        title="Modifier l'article"
+                      >
+                        <Edit size={16} className="md:w-[18px] md:h-[18px]" />
+                      </Link>
+                      <button className="hidden sm:block p-2 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600">
+                        <MoreHorizontal size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -189,26 +189,52 @@ const OrderInsertion = () => {
     setIsSubmitting(true);
 
     try {
-      await api.orders.create({
-        ...formData,
-        orderType,
-        calculatedPrice: totalPrice
-      });
+      // Construct WhatsApp Message
+      let message = `*Nouvelle Commande - Le Focus*\n\n`;
+      message += `*Type:* ${orderType.toUpperCase().replace('_', ' ')}\n`;
+      message += `*Client:* ${formData.name} (${formData.company || 'Particulier'})\n`;
+      message += `*Email:* ${formData.email}\n`;
+      message += `*Tél:* ${formData.phone}\n\n`;
+      
+      message += `*--- Détails de la commande ---*\n`;
+      if (orderType === 'abonnement') {
+        const zoneLabel = PRICING_DATA.abonnement.zones.find(z => z.id === formData.zone)?.label;
+        const durationLabel = PRICING_DATA.abonnement.durations.find(d => d.id === formData.duration)?.label;
+        message += `Zone: ${zoneLabel}\nDurée: ${durationLabel}\n`;
+      } 
+      else if (orderType === 'insertion' || orderType === 'publi_redaction') {
+        message += `Format: ${formData.format}\n`;
+        message += `Mode: ${formData.isColor ? 'Couleur' : 'Noir & Blanc'}\n`;
+        message += `Quantité: ${formData.quantity}\n`;
+        if(orderType === 'publi_redaction') message += `Type rédaction: ${formData.redactionType === 'proposed' ? 'Proposé' : 'Rédaction'}\n`;
+      }
+      else if (orderType === 'publi_reportage') {
+        const typeLabel = PRICING_DATA.publi_reportage.types.find(t => t.id === formData.reportageType)?.label;
+        message += `Catégorie: ${typeLabel}\n`;
+        message += `Quantité: ${formData.quantity}\n`;
+        message += `Estimation Lignes: ${formData.linesEstimate}\n`;
+        if(formData.reportageType === 'deces' && formData.hasPhoto) message += `Option: Avec Photo\n`;
+      }
+
+      message += `\n*Message:* ${formData.message}\n`;
+      message += `\n*Estimation Prix:* ${totalPrice.toLocaleString('fr-FR')} FCFA`;
+
+      // Encode and Open WhatsApp
+      const waUrl = `https://wa.me/2290196768717?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
 
       setAlert({
         show: true,
         type: 'success',
-        message: '✅ Commande reçue ! Nous vous contacterons pour la validation et le paiement.'
+        message: '✅ Redirection vers WhatsApp...'
       });
       
-      // Optional: reset form
-      // setFormData({ ...initialState }); 
     } catch (error) {
       console.error(error);
       setAlert({
         show: true,
         type: 'error',
-        message: '❌ Une erreur est survenue. Veuillez réessayer.'
+        message: '❌ Une erreur est survenue.'
       });
     } finally {
       setIsSubmitting(false);

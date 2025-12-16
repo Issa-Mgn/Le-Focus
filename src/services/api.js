@@ -234,6 +234,83 @@ export const api = {
             }
         },
 
+        update: async (id, articleData) => {
+            const formData = new FormData();
+
+            formData.append('title', articleData.title);
+            // slug update logic if needed, usually we might keep the old slug or update it
+            if (articleData.slug) formData.append('slug', articleData.slug);
+
+            formData.append('excerpt', articleData.excerpt);
+            formData.append('content', articleData.content);
+            formData.append('category', articleData.category);
+            formData.append('author', articleData.author);
+
+            // Handle Images
+            // For updates, we might need to handle existing images vs new images
+            // This implementation assumes we are sending new images or keeping existing ones logic is handled by backend or we overlook it for now.
+            // A common pattern for simple updates is to re-upload if changed, or backend handles "if not provided, keep old".
+            // Adding logic to send strings (URLs) if not changed or Blobs if changed is complex with FormData.
+            // Simplest approach: If it's a base64 string (starts with data:), append it. If it's a URL, maybe backend ignores or we don't send it?
+
+            // NOTE: This assumes the backend can handle partial updates or we send everything.
+            // Let's iterate and see what we have.
+            const nonEmptyImages = (articleData.images || []).filter(img => img);
+
+            if (nonEmptyImages.length > 0) {
+                // Check if cover image is new (base64)
+                if (nonEmptyImages[0] && nonEmptyImages[0].startsWith('data:')) {
+                    const coverBlob = base64ToBlob(nonEmptyImages[0]);
+                    if (coverBlob) formData.append('cover_image', coverBlob, 'cover.jpg');
+                }
+
+                // Gallery Images
+                nonEmptyImages.slice(1).forEach((img, index) => {
+                    if (img && img.startsWith('data:')) {
+                        const blob = base64ToBlob(img);
+                        if (blob) formData.append('gallery_images', blob, `gallery-${index}.jpg`);
+                    }
+                });
+            }
+
+            // Handle PDF
+            if (articleData.pdf && articleData.pdf.startsWith('data:')) {
+                const blob = base64ToBlob(articleData.pdf);
+                if (blob) {
+                    formData.append('pdf_file', blob, 'document.pdf');
+                }
+            }
+
+            const token = localStorage.getItem('adminToken');
+
+            try {
+                const response = await fetch(`${API_URL}/articles/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData,
+                });
+
+                if (response.status === 401) {
+                    throw new Error("Unauthorized");
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Failed to update article');
+                }
+
+                // Clear cache
+                api.articles.clearCache();
+
+                return await response.json();
+            } catch (error) {
+                console.error("API Update Article Error:", error);
+                throw error;
+            }
+        },
+
         incrementViews: async (id) => {
             try {
                 await fetch(`${API_URL}/articles/${id}/views`, { method: 'POST' });
@@ -307,6 +384,66 @@ export const api = {
             } catch (error) {
                 console.error("API Order Fetch Error:", error);
                 return [];
+            }
+        }
+    },
+
+    comments: {
+        getByArticleId: async (articleId) => {
+            try {
+                const response = await fetch(`${API_URL}/articles/${articleId}/comments`);
+                if (!response.ok) {
+                    // If endpoint doesn't exist yet, return mock empty array to prevent crash
+                    console.warn("Comments API endpoint might be missing, returning empty array.");
+                    return [];
+                }
+                return await response.json();
+            } catch (error) {
+                console.error("API Get Comments Error:", error);
+                return [];
+            }
+        },
+
+        add: async (articleId, commentData) => {
+            try {
+                const response = await fetch(`${API_URL}/articles/${articleId}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(commentData)
+                });
+                if (!response.ok) throw new Error('Failed to add comment');
+                return await response.json();
+            } catch (error) {
+                console.error("API Add Comment Error:", error);
+                throw error;
+            }
+        },
+
+        like: async (commentId) => {
+            try {
+                const response = await fetch(`${API_URL}/comments/${commentId}/like`, {
+                    method: 'POST'
+                });
+                if (!response.ok) throw new Error('Failed to like comment');
+                return await response.json();
+            } catch (error) {
+                console.error("API Like Comment Error:", error);
+                throw error;
+            }
+        },
+
+        reply: async (commentId, replyData) => {
+            try {
+                const response = await fetch(`${API_URL}/comments/${commentId}/replies`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(replyData)
+                });
+                if (!response.ok) throw new Error('Failed to reply to comment');
+                return await response.json();
+            } catch (error) {
+                console.error("API Reply Comment Error:", error);
+                throw error;
             }
         }
     }

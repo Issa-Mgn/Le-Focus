@@ -273,10 +273,10 @@ const Home = () => {
           </div>
 
           {/* Carousel Skeleton */}
-          <div className="relative w-full h-[450px] md:h-[500px] bg-neutral-800 overflow-hidden">
+          <div className="relative w-full h-[450px] md:h-[500px] bg-neutral-100 overflow-hidden">
             {/* Shimmer Effect */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"
               animate={{ x: ['-100%', '200%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             />
@@ -291,30 +291,30 @@ const Home = () => {
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <div className="w-2 h-2 bg-white/30 rounded-full animate-pulse" />
-                    <div className="w-24 h-6 bg-white/20 rounded-full backdrop-blur-sm" />
+                    <div className="w-2 h-2 bg-neutral-300 rounded-full animate-pulse" />
+                    <div className="w-24 h-6 bg-neutral-200 rounded-full" />
                   </motion.div>
                   
                   {/* Title Skeleton */}
                   <div className="space-y-3 mb-3">
                     <motion.div 
-                      className="w-full max-w-xl h-8 md:h-10 bg-white/20 rounded-lg backdrop-blur-sm relative overflow-hidden"
+                      className="w-full max-w-xl h-8 md:h-10 bg-neutral-200 rounded-lg relative overflow-hidden"
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
                         animate={{ x: ['-100%', '100%'] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                       />
                     </motion.div>
                     <motion.div 
-                      className="w-2/3 max-w-md h-8 md:h-10 bg-white/20 rounded-lg backdrop-blur-sm relative overflow-hidden"
+                      className="w-2/3 max-w-md h-8 md:h-10 bg-neutral-200 rounded-lg relative overflow-hidden"
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
                     >
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
                         animate={{ x: ['-100%', '100%'] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.2 }}
                       />
@@ -323,21 +323,21 @@ const Home = () => {
                   
                   {/* Excerpt Skeleton */}
                   <div className="space-y-2 mb-5">
-                    <div className="w-full max-w-2xl h-4 bg-white/15 rounded" />
-                    <div className="w-3/4 max-w-xl h-4 bg-white/15 rounded" />
+                    <div className="w-full max-w-2xl h-4 bg-neutral-200 rounded" />
+                    <div className="w-3/4 max-w-xl h-4 bg-neutral-200 rounded" />
                   </div>
                   
                   {/* Buttons Skeleton */}
                   <div className="flex flex-wrap items-center gap-3">
                     <motion.div 
-                      className="px-6 py-3 bg-white/90 rounded-full relative overflow-hidden"
+                      className="px-6 py-3 bg-neutral-200 rounded-full relative overflow-hidden"
                       animate={{ opacity: [0.8, 1, 0.8] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       <div className="w-32 h-5 bg-neutral-300 rounded" />
                     </motion.div>
-                    <div className="px-4 py-2.5 bg-black/40 backdrop-blur-sm rounded-full border border-white/20">
-                      <div className="w-24 h-4 bg-white/20 rounded" />
+                    <div className="px-4 py-2.5 bg-white border border-neutral-200 rounded-full">
+                      <div className="w-24 h-4 bg-neutral-200 rounded" />
                     </div>
                   </div>
                 </div>
@@ -345,17 +345,17 @@ const Home = () => {
             </div>
 
             {/* Navigation Arrows Skeleton */}
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 opacity-50">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/50 border border-neutral-200 opacity-50">
               <div className="w-6 h-6" />
             </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 opacity-50">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/50 border border-neutral-200 opacity-50">
               <div className="w-6 h-6" />
             </div>
 
             {/* Dots Skeleton */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2.5 bg-black/30 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/10">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2.5 bg-white/50 backdrop-blur-md px-4 py-2.5 rounded-full border border-neutral-200">
               {[1, 2, 3].map((i) => (
-                <div key={i} className={`h-1.5 rounded-full ${i === 1 ? 'w-8 bg-primary-500' : 'w-1.5 bg-white/50'}`} />
+                <div key={i} className={`h-1.5 rounded-full ${i === 1 ? 'w-8 bg-primary-500' : 'w-1.5 bg-neutral-300'}`} />
               ))}
             </div>
           </div>

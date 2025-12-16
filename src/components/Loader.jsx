@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import logo from '../assets/logo.jpg';
 
 const Loader = () => {
   return (
@@ -7,46 +8,36 @@ const Loader = () => {
       <div className="relative flex flex-col items-center">
         <motion.div
           animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-            borderRadius: ["20%", "50%", "20%"]
+            scale: [1, 1.05, 1],
+            opacity: [1, 0.8, 1]
           }}
           transition={{
             duration: 2,
             ease: "easeInOut",
-            times: [0, 0.5, 1],
             repeat: Infinity
           }}
-          className="w-24 h-24 bg-gradient-to-br from-primary-600 to-primary-800 text-white flex items-center justify-center font-bold text-4xl shadow-2xl shadow-primary-600/30 mb-8"
+          className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden mb-8 shadow-2xl shadow-primary-600/20 bg-white"
         >
-          F
+          <img src={logo} alt="Le Focus" className="w-full h-full object-cover" />
         </motion.div>
         
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="text-center"
-        >
-          <h2 className="text-2xl font-serif font-bold text-neutral-900 mb-2">Le Focus</h2>
-          <div className="flex gap-1 justify-center">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 rounded-full bg-primary-600"
-                animate={{
-                  y: [0, -10, 0],
-                  opacity: [0.5, 1, 0.5]
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
+        <div className="flex gap-2 justify-center">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="w-3 h-3 rounded-full bg-primary-600"
+              animate={{
+                y: [0, -10, 0],
+                opacity: [0.4, 1, 0.4]
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay: i * 0.2
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

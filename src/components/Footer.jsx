@@ -2,7 +2,52 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone, Send, Sparkles } from 'lucide-react';
+import MailchimpSubscribe from "react-mailchimp-subscribe";
 import logo from '../assets/logo.jpg';
+
+const MAILCHIMP_URL = "http://eepurl.com/juwIPk";
+
+// Composant de formulaire personnalisé pour gérer les états de Mailchimp
+const CustomForm = ({ status, message, onValidated }) => {
+  let email;
+  const submit = () =>
+    email &&
+    email.value.indexOf("@") > -1 &&
+    onValidated({
+      EMAIL: email.value,
+    });
+
+  return (
+    <div className="flex flex-col gap-3">
+        <div className="relative">
+        <input
+            ref={node => (email = node)}
+            type="email"
+            placeholder="Votre email"
+            className="w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20 transition-all placeholder:text-neutral-500"
+        />
+        </div>
+        <motion.button
+            onClick={submit}
+            disabled={status === "sending"}
+            className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary-600/20 hover:shadow-xl hover:shadow-primary-600/30 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+        >
+            <Send size={16} />
+            {status === "sending" ? "Envoi..." : "S'abonner"}
+        </motion.button>
+        
+        {/* Feedback Messages */}
+        {status === "error" && (
+            <div className="text-red-400 text-xs mt-2" dangerouslySetInnerHTML={{ __html: message }} />
+        )}
+        {status === "success" && (
+            <div className="text-green-400 text-xs mt-2">Merci ! Votre inscription est confirmée.</div>
+        )}
+    </div>
+  );
+};
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -148,23 +193,19 @@ const Footer = () => {
             <p className="text-neutral-400 text-sm mb-4 leading-relaxed">
               Restez informé des dernières actualités.
             </p>
-            <form className="flex flex-col gap-3">
-              <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Votre email" 
-                  className="w-full bg-neutral-800 border border-neutral-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20 transition-all placeholder:text-neutral-500"
-                />
-              </div>
-              <motion.button 
-                className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary-600/20 hover:shadow-xl hover:shadow-primary-600/30 flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Send size={16} />
-                S'abonner
-              </motion.button>
-            </form>
+            
+            {/* Mailchimp Integration */}
+            <MailchimpSubscribe
+                url={MAILCHIMP_URL}
+                render={({ subscribe, status, message }) => (
+                    <CustomForm
+                        status={status}
+                        message={message}
+                        onValidated={formData => subscribe(formData)}
+                    />
+                )}
+            />
+
             <div className="flex items-center gap-2 mt-4 text-xs text-neutral-500">
               <Sparkles size={12} className="text-primary-500" />
               <span>Gratuit et sans spam</span>

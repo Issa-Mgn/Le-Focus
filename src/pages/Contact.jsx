@@ -24,16 +24,36 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch("https://formspree.io/f/xldqkeeb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setAlert({
+          show: true,
+          type: 'success',
+          message: 'Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.'
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error('Erreur lors de l\'envoi');
+      }
+    } catch (error) {
       setAlert({
         show: true,
-        type: 'success',
-        message: 'Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.'
+        type: 'error',
+        message: 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.'
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      console.error(error);
+    } finally {
       setIsSubmitting(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -151,7 +171,12 @@ const Contact = () => {
               <div className="bg-white rounded-2xl shadow-xl border border-neutral-100 p-8">
                 <h2 className="text-3xl font-serif font-bold mb-6">Envoyez-nous un message</h2>
                 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form 
+                  onSubmit={handleSubmit} 
+                  action="https://formspree.io/f/xldqkeeb" 
+                  method="POST"
+                  className="space-y-6"
+                >
                   <div>
                     <label className="block text-sm font-bold text-neutral-700 mb-2">Nom complet</label>
                     <input

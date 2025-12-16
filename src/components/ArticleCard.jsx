@@ -1,12 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Eye, Clock } from 'lucide-react';
+import { Calendar, ArrowRight, Eye, Clock, Bookmark } from 'lucide-react';
+import { useBookmarks } from '../hooks/useBookmarks';
 
 const ArticleCard = ({ article, featured = false }) => {
   const [imageError, setImageError] = React.useState(false);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  
   const coverImage = article.images ? article.images[0] : article.image;
   const fallbackImage = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800';
+  const isSaved = isBookmarked(article.id);
+
+  const handleBookmark = (e) => {
+    e.preventDefault();
+    toggleBookmark(article);
+  };
   
   return (
     <motion.div 
@@ -37,6 +46,19 @@ const ArticleCard = ({ article, featured = false }) => {
         >
           {article.category}
         </motion.div>
+
+        {/* Bookmark Button */}
+        <motion.button 
+          onClick={handleBookmark}
+          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md shadow-lg transition-all ${
+            isSaved ? 'bg-primary-600 text-white' : 'bg-white/90 text-neutral-400 hover:text-primary-600 hover:bg-white'
+          }`}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title={isSaved ? "Retirer des favoris" : "Sauvegarder pour plus tard"}
+        >
+          <Bookmark size={14} fill={isSaved ? "currentColor" : "none"} />
+        </motion.button>
         
         {/* Quick Read Button (appears on hover) */}
         <motion.div

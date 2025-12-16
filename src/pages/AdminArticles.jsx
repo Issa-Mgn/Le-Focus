@@ -181,6 +181,13 @@ const AdminArticles = () => {
                       >
                         <Eye size={18} />
                       </Link>
+                      <Link 
+                        to={`/admin/edit/${article.id}`}
+                        className="p-2 text-neutral-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Modifier"
+                      >
+                        <Edit size={18} />
+                      </Link>
                       <button 
                         onClick={() => handleDelete(article.id)}
                         className="p-2 text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"

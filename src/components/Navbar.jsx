@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, Search, ChevronDown, Sparkles, Info, FolderClosed, FolderOpen, Unplug, BookOpen, Home } from 'lucide-react';
+import { Menu, X, Search, ChevronDown, Sparkles, Info, FolderClosed, FolderOpen, Unplug, BookOpen, Home, ForkKnife, NotebookText, Bookmark } from 'lucide-react';
 import { categories } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
 import clsx from 'clsx';
@@ -43,6 +43,7 @@ const Navbar = () => {
     { to: '/articles', label: 'Articles', icon: FolderOpen },
     { to: '/contact', label: 'Contact', icon: Unplug },
     { to: '/about', label: 'À propos', icon: Info },
+    { to: '/bookmarks', label: 'Ma Liste', icon: Bookmark },
   ];
 
   return (
@@ -161,7 +162,7 @@ const Navbar = () => {
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 400 }}
                 >
-                  <FolderClosed size={16} />
+                  <NotebookText size={16} />
                   <span>Catégories</span>
                   <motion.div
                     animate={{ rotate: showCategories ? 180 : 0 }}
