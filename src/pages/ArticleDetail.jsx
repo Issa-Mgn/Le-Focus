@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, User, Download, ArrowLeft, ArrowRight, Share2, Loader2, X, Check, Maximize2, Bookmark, Eye, Moon, Sun, Type, MoveLeft, SunMoon } from 'lucide-react';
+import { Calendar, User, Download, ArrowLeft, ArrowRight, Share2, Loader2, X, Check, Maximize2, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
@@ -92,31 +92,13 @@ const ArticleDetailContent = () => {
 
 
 
-  /* New Features Hooks */
+  /* Bookmarks Hook */
   const { isBookmarked, toggleBookmark } = useBookmarks();
-  const [zenMode, setZenMode] = useState(false);
-  const [zenSettings, setZenSettings] = useState({
-    fontSize: 'text-lg', // text-base, text-lg, text-xl
-    theme: 'light', // light, sepia, dark
-    width: 'max-w-3xl' // max-w-2xl, max-w-3xl, max-w-4xl
-  });
-
   const isSaved = article ? isBookmarked(article.id) : false;
 
   const handleToggleBookmark = () => {
     if (article) {
         toggleBookmark(article);
-    }
-  };
-
-  const toggleZenMode = () => setZenMode(!zenMode);
-
-  // Zen Mode Classes
-  const getZenThemeClass = () => {
-    switch (zenSettings.theme) {
-        case 'sepia': return 'bg-[#f4ecd8] text-[#5b4636]';
-        case 'dark': return 'bg-[#1a1a1a] text-[#e0e0e0]';
-        default: return 'bg-white text-neutral-900';
     }
   };
   
@@ -416,15 +398,6 @@ const ArticleDetailContent = () => {
                 <Bookmark size={16} fill={isSaved ? "currentColor" : "none"} />
                 <span>{isSaved ? 'Sauvegardé' : 'Sauvegarder'}</span>
               </button>
-              
-              <button
-                onClick={toggleZenMode}
-                className="flex items-center gap-2 bg-neutral-50 text-neutral-700 px-4 py-2 rounded-lg font-medium hover:bg-neutral-100 transition-colors text-sm"
-                title="Mode Lecture"
-              >
-                <Eye size={16} />
-                <span className="hidden sm:inline">Mode Zen</span>
-              </button>
             </div>
             
             <button 
@@ -472,113 +445,6 @@ const ArticleDetailContent = () => {
           </article>
         </div>
 
-        {/* ZEN MODE OVERLAY */}
-        <AnimatePresence>
-            {zenMode && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[9999] bg-black overscroll-none"
-                >
-                    {/* Floating Close Button (Fixed Top Right) */}
-                    <button
-                        onClick={toggleZenMode}
-                        className="fixed top-6 right-6 z-[10000] p-3 text-white/50 hover:text-white bg-black/20 hover:bg-black/40 rounded-full transition-all backdrop-blur-sm"
-                        title="Fermer"
-                    >
-                        <X size={24} />
-                    </button>
-
-                    {/* Floating Controls Toolbar (Fixed Bottom) */}
-                    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[10000] flex items-center gap-2 sm:gap-4 rounded-full px-6 py-3 bg-neutral-900/90 backdrop-blur-xl border border-white/10 shadow-2xl text-white">
-                        {/* Theme Toggles */}
-                        <button 
-                            onClick={() => setZenSettings({...zenSettings, theme: 'light'})}
-                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'light' ? 'bg-white text-black' : 'hover:bg-white/10 text-white/70'}`}
-                            title="Thème Clair"
-                        >
-                            <Sun size={20} />
-                            <span className="sr-only">Clair</span>
-                        </button>
-                        <button 
-                            onClick={() => setZenSettings({...zenSettings, theme: 'sepia'})}
-                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'sepia' ? 'bg-[#d8cba9] text-[#5b4636]' : 'hover:bg-white/10 text-white/70'}`}
-                            title="Thème Sépia"
-                        >
-                            <SunMoon size={27} />
-                            <span className="sr-only">Sépia</span>
-                        </button>
-                        <button 
-                            onClick={() => setZenSettings({...zenSettings, theme: 'dark'})}
-                            className={`p-2 rounded-full transition-all ${zenSettings.theme === 'dark' ? 'bg-neutral-800 border border-white/20' : 'hover:bg-white/10 text-white/70'}`}
-                            title="Thème Sombre"
-                        >
-                            <Moon size={20} />
-                            <span className="sr-only">Sombre</span>
-                        </button>
-                        
-                        <div className="w-px h-8 bg-white/20 mx-2"></div>
-                        
-                        {/* Font Size */}
-                        <button 
-                            onClick={() => setZenSettings(s => ({...s, fontSize: s.fontSize === 'text-base' ? 'text-lg' : s.fontSize === 'text-lg' ? 'text-xl' : 'text-base'}))}
-                            className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center w-10 text-white/90"
-                            title="Changer la taille"
-                        >
-                            <Type size={20} />
-                            <span className="text-xs ml-0.5 font-bold align-top">
-                                {zenSettings.fontSize === 'text-base' ? '1x' : zenSettings.fontSize === 'text-lg' ? '2x' : '3x'}
-                            </span>
-                        </button>
-                    </div>
-
-                    {/* Scrollable Content Container */}
-                    <div className="h-full overflow-y-auto">
-                        <div className={`min-h-screen ${zenSettings.width} mx-auto transition-all duration-300 py-12 md:py-20 relative`}>
-                            {/* The 'Paper' */}
-                            <div className={`min-h-screen shadow-2xl p-8 md:p-16 ${getZenThemeClass()} rounded-lg relative`}>
-                                
-                                {/* Zen Content */}
-                                <article className={`prose max-w-none ${zenSettings.theme === 'dark' ? 'prose-invert' : ''}`}>
-                                    <h1 className="font-serif text-4xl md:text-6xl font-bold mb-8 leading-tight text-center pt-8">
-                                        {article.title}
-                                    </h1>
-                                    <p className="text-xl md:text-2xl opacity-80 mb-12 font-serif italic text-center max-w-2xl mx-auto leading-relaxed">
-                                        {article.excerpt}
-                                    </p>
-                                    <div className="flex justify-center mb-12 opacity-50">
-                                        <span className="h-px w-24 bg-current"></span>
-                                    </div>
-                                    <div className={`${zenSettings.fontSize} leading-loose space-y-8 opacity-90 text-justify pb-24`}>
-                                        {article.paragraphs && article.paragraphs.length > 0 ? (
-                                            article.paragraphs.map((paragraph, index) => (
-                                            <p key={index}>
-                                                {paragraph}
-                                            </p>
-                                            ))
-                                        ) : (
-                                            <p>{article.content}</p>
-                                        )}
-                                    </div>
-                                    
-                                    <div className="border-t border-current/10 pt-12 pb-8 text-center opacity-60 text-sm">
-                                        <button 
-                                            onClick={toggleZenMode}
-                                            className="flex items-center gap-2 mx-auto px-8 py-3 rounded-full border border-current hover:bg-current hover:text-inherit transition-all font-bold text-lg"
-                                            style={{ color: 'inherit' }}
-                                        >
-                                            <X size={24} />
-                                            Fermer la lecture
-                                        </button>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
 
         {/* Comments Section */}
         {article && <CommentsSection articleId={article.id} />}
