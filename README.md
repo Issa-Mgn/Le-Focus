@@ -1,16 +1,32 @@
-# React + Vite
+# Le-Focus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Le projet "Le-Focus" est une application web front-end construite avec React et Vite. Il s'agit d'une interface interactive destinée à présenter des informations via une application single-page (navigation client-side, composants React, animations et visualisations).
 
-Currently, two official plugins are available:
+Technologies principales
+- React (v19)
+- Vite (bundler/developpement rapide)
+- Tailwind CSS
+- Framer Motion (animations)
+- Recharts (visualisations)
+- React Router (navigation)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Déploiement
+- Le site est déployé et accessible ici : https://lefocusinfos.netlify.app/
 
-## React Compiler
+Comment lancer le projet en local
+1. Cloner le dépôt
+   git clone https://github.com/Issa-Mgn/Le-Focus.git
+2. Installer les dépendances
+   npm install
+3. Lancer le serveur de développement
+   npm run dev
+4. (Options)
+   - Prévisualiser une build : npm run preview
+   - Construire pour la production : npm run build
+   - Linter le code : npm run lint
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Remarques
+- Ce projet utilise npm pour la gestion des scripts et dépendances.
+- Il n'y a pas de licence ajoutée au dépôt pour le moment.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Si tu veux que j'ajoute une section supplémentaire (contribuer, tests, captures d'écran, licence), dis-le et je mets à jour le README.
