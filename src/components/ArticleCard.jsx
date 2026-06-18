@@ -1,141 +1,79 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Eye, Clock, Bookmark } from 'lucide-react';
+import { Bookmark, Eye } from 'lucide-react';
 import { useBookmarks } from '../hooks/useBookmarks';
 
-const ArticleCard = ({ article, featured = false }) => {
+const fallbackImage = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=900';
+
+const ArticleCard = ({ article }) => {
   const [imageError, setImageError] = React.useState(false);
   const { isBookmarked, toggleBookmark } = useBookmarks();
-  
-  const coverImage = article.images ? article.images[0] : article.image;
-  const fallbackImage = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800';
+  const coverImage = article.images?.[0] || article.image || fallbackImage;
   const isSaved = isBookmarked(article.id);
 
   const handleBookmark = (e) => {
     e.preventDefault();
     toggleBookmark(article);
   };
-  
+
   return (
-    <motion.div 
-      className="group relative overflow-hidden rounded-xl bg-white shadow-lg border border-neutral-100 card-hover flex flex-col h-[380px]"
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-    >
-      {/* Image Container - Hauteur réduite et compacte */}
-      <div className="relative overflow-hidden h-[180px] flex-shrink-0">
-        <motion.img 
-          src={imageError ? fallbackImage : coverImage} 
-          alt={article.title} 
-          className="w-full h-full object-cover"
-          onError={() => setImageError(true)}
-          loading="lazy"
-          decoding="async"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.6 }}
-        />
-        
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/80 via-neutral-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        {/* Category Badge */}
-        <motion.div 
-          className="absolute top-3 left-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg"
-          whileHover={{ scale: 1.1 }}
-        >
-          {article.category}
-        </motion.div>
+    <Link to={`/article/${article.id}`} className="group block bg-white">
+      <article className="border border-neutral-100 bg-white">
+        <div className="relative bg-neutral-100">
+          <img
+            src={imageError ? fallbackImage : coverImage}
+            alt={article.title}
+            onError={() => setImageError(true)}
+            loading="lazy"
+            decoding="async"
+            className="h-[260px] w-full object-cover sm:h-[320px]"
+          />
+          <span className="absolute left-4 top-4 bg-white px-3 py-2 font-display text-[10px] font-bold uppercase tracking-[0.12em] text-primary-800">
+            {article.category || 'Actualité'}
+          </span>
+        </div>
 
-        {/* Bookmark Button */}
-        <motion.button 
-          onClick={handleBookmark}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md shadow-lg transition-all ${
-            isSaved ? 'bg-primary-600 text-white' : 'bg-white/90 text-neutral-400 hover:text-primary-600 hover:bg-white'
-          }`}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          title={isSaved ? "Retirer des favoris" : "Sauvegarder pour plus tard"}
-        >
-          <Bookmark size={14} fill={isSaved ? "currentColor" : "none"} />
-        </motion.button>
-        
-        {/* Quick Read Button (appears on hover) */}
-        <motion.div
-          className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          initial={{ scale: 0.8 }}
-          whileHover={{ scale: 1 }}
-        >
-          <Link 
-            to={`/article/${article.id}`}
-            className="flex items-center gap-1.5 bg-white text-neutral-900 px-3 py-1.5 rounded-full font-bold text-xs shadow-xl hover:bg-neutral-100 transition-colors"
-          >
-            <Clock size={14} />
-            Lire
-          </Link>
-        </motion.div>
-      </div>
-
-      {/* Content - Hauteur flexible avec flex-1 */}
-      <div className="p-4 flex flex-col justify-between flex-1">
-        <div className="flex-1">
-          {/* Meta Info */}
-          <div className="flex items-center gap-4 text-[10px] text-neutral-500 mb-2">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Calendar size={12} className="text-primary-600" />
-              {article.date}
-            </span>
-            <span className="flex items-center gap-1.5 font-medium">
-              <Eye size={12} className="text-primary-600" />
-              {(article.views || 0).toLocaleString()}
+        <div className="px-5 pb-5 pt-4">
+          <div className="mb-3 flex items-center gap-4 font-display text-[12px] text-neutral-400">
+            <span>{article.date}</span>
+            <span className="inline-flex items-center gap-1">
+              <Eye size={13} />
+              {article.views || 0}
             </span>
           </div>
-          
-          {/* Title */}
-          <Link to={`/article/${article.id}`}>
-            <h3 className="font-serif font-bold text-neutral-900 mb-2 group-hover:text-primary-700 transition-colors leading-tight text-base line-clamp-2">
-              {article.title}
-            </h3>
-          </Link>
-          
-          {/* Excerpt */}
-          <p className="text-neutral-600 leading-relaxed text-xs line-clamp-2 mb-3">
+
+          <h3 className="mb-2 font-serif text-[22px] font-black leading-tight text-neutral-950 transition group-hover:text-primary-800">
+            {article.title}
+          </h3>
+          <p className="line-clamp-2 text-[16px] leading-7 text-neutral-600">
             {article.excerpt}
           </p>
-        </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-neutral-100">
-          {/* Author */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 overflow-hidden ring-2 ring-primary-100">
-              <img 
-                src={`https://ui-avatars.com/api/?name=${article.author}&background=DC2626&color=fff&bold=true`} 
-                alt={article.author}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+          <div className="mt-6 flex items-center justify-between border-t border-neutral-100 pt-4">
+            <div className="flex items-center gap-3">
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-primary-600 font-display text-xs font-bold text-white">
+                {(article.author || 'Wabi MIGAN')
+                  .split(' ')
+                  .map((word) => word[0])
+                  .join('')
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </div>
+              <span className="font-display text-sm font-semibold text-neutral-700">{article.author || 'Wabi MIGAN'}</span>
             </div>
-            <div>
-              <p className="text-[10px] text-neutral-500 font-medium">Par</p>
-              <p className="text-xs font-bold text-neutral-900">{article.author}</p>
-            </div>
+
+            <button
+              type="button"
+              onClick={handleBookmark}
+              className="grid h-9 w-9 place-items-center text-neutral-300 transition hover:text-primary-700"
+              aria-label={isSaved ? 'Retirer des sauvegardes' : 'Sauvegarder'}
+            >
+              <Bookmark size={18} fill={isSaved ? 'currentColor' : 'none'} />
+            </button>
           </div>
-          
-          {/* Read More Link */}
-          <Link 
-            to={`/article/${article.id}`}
-            className="flex items-center gap-1.5 text-primary-700 font-bold text-xs hover:gap-2 transition-all group/link"
-          >
-            Lire 
-            <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
-          </Link>
         </div>
-      </div>
-
-      {/* Decorative Corner */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary-500/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-    </motion.div>
+      </article>
+    </Link>
   );
 };
 
