@@ -121,11 +121,11 @@ const AdminLogin = () => {
         </div>
 
         {/* Back to site */}
-        <div className="text-center mt-6">
+        {/* <div className="text-center mt-6">
           <a href="/" className="text-neutral-400 hover:text-white text-sm transition-colors">
             ← Retour au site
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );
