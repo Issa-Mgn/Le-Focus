@@ -5,6 +5,7 @@ export const useTextToSpeech = () => {
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [isSupported, setIsSupported] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const utteranceRef = useRef(null);
 
     useEffect(() => {
@@ -23,6 +24,7 @@ export const useTextToSpeech = () => {
 
         // Cancel any current speaking
         window.speechSynthesis.cancel();
+        setIsLoading(true);
 
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'fr-FR'; // French by default
@@ -32,17 +34,20 @@ export const useTextToSpeech = () => {
         utterance.onstart = () => {
             setIsSpeaking(true);
             setIsPaused(false);
+            setIsLoading(false);
         };
 
         utterance.onend = () => {
             setIsSpeaking(false);
             setIsPaused(false);
+            setIsLoading(false);
         };
 
         utterance.onerror = (e) => {
             console.error("Speech synthesis error", e);
             setIsSpeaking(false);
             setIsPaused(false);
+            setIsLoading(false);
         };
 
         utteranceRef.current = utterance;
@@ -74,5 +79,5 @@ export const useTextToSpeech = () => {
         setIsPaused(false);
     };
 
-    return { isSupported, isSpeaking, isPaused, speak, pause, resume, cancel };
+    return { isSupported, isSpeaking, isPaused, isLoading, speak, pause, resume, cancel };
 };

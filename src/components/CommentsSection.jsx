@@ -31,9 +31,9 @@ const CommentItem = ({ comment, onLike, onReply }) => {
           {(comment.author || 'A').charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="font-serif text-xl font-black text-neutral-950">{comment.author || 'Anonyme'}</div>
+          <div className="font-serif text-[17px] font-black text-neutral-950">{comment.author || 'Anonyme'}</div>
           <div className="font-display text-xs text-neutral-500">{formatDate(comment.date || comment.created_at)}</div>
-          <p className="mt-3 font-serif text-[19px] leading-7 text-neutral-700">{comment.content}</p>
+          <p className="mt-3 font-serif text-[15px] leading-7 text-neutral-700">{comment.content}</p>
 
           <div className="mt-3 flex items-center gap-5 font-display text-sm text-neutral-500">
             <button onClick={() => onLike(comment.id)} className="inline-flex items-center gap-2 hover:text-primary-700">
@@ -63,7 +63,7 @@ const CommentItem = ({ comment, onLike, onReply }) => {
                 <div key={reply.id} className="bg-white p-4 shadow-sm">
                   <div className="font-display text-sm font-bold text-neutral-800">{reply.author || 'Anonyme'}</div>
                   <div className="font-display text-xs text-neutral-400">{formatDate(reply.date || reply.created_at)}</div>
-                  <p className="mt-2 font-serif text-[17px] text-neutral-700">{reply.content}</p>
+                  <p className="mt-2 font-serif text-[14px] text-neutral-700">{reply.content}</p>
                 </div>
               ))}
             </div>
@@ -141,12 +141,12 @@ const CommentsSection = ({ articleId }) => {
 
   return (
     <section className="mt-16">
-      <h2 className="mb-8 border-l-4 border-primary-700 pl-5 font-serif text-[32px] font-black text-neutral-950">
+      <h2 className="mb-8 border-l-2 border-primary-600 pl-5 font-serif text-[24px] font-black text-neutral-950">
         Commentaires ({comments.length})
       </h2>
 
       <form onSubmit={handleAddComment} className="mb-12 bg-white p-6 shadow-sm">
-        <h3 className="mb-5 flex items-center gap-3 font-serif text-xl font-black text-neutral-950">
+        <h3 className="mb-5 flex items-center gap-3 font-serif text-[18px] font-black text-neutral-950">
           <MessageSquare size={20} className="text-primary-700" />
           Laisser un commentaire
         </h3>
@@ -168,7 +168,7 @@ const CommentsSection = ({ articleId }) => {
             required
           />
           <div className="flex justify-end">
-            <button disabled={isSubmitting} className="inline-flex items-center gap-3 px-2 py-3 font-display text-lg text-neutral-800 hover:text-primary-700">
+            <button disabled={isSubmitting} className="inline-flex items-center gap-3 px-2 py-3 font-display text-sm font-semibold text-neutral-800 hover:text-primary-700">
               {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={19} />}
               Publier
             </button>

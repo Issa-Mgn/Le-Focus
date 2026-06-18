@@ -12,21 +12,21 @@ const Bookmarks = () => {
         <div className="page-hero-inner">
           <p className="editorial-kicker">Vos sauvegardes</p>
           <h1 className="page-title">Ma Liste</h1>
-          <p className="mt-2 font-serif text-[25px] text-neutral-500">{bookmarks.length} articles</p>
+          <p className="mt-2 font-serif text-[16px] text-neutral-500">{bookmarks.length} articles</p>
         </div>
       </section>
 
       {bookmarks.length > 0 ? (
         <section className="py-10">
-          <div className="container-custom max-w-4xl grid gap-8">
+          <div className="container-custom grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {bookmarks.map((article) => <ArticleCard key={article.id} article={article} />)}
           </div>
         </section>
       ) : (
         <section className="grid min-h-[55vh] place-items-center px-5 text-center">
           <div>
-            <p className="font-serif text-[28px] text-neutral-500">Aucun article sauvegardé.</p>
-            <Link to="/articles" className="mt-8 inline-block font-serif text-[25px] text-primary-800 hover:text-primary-900">
+            <p className="font-serif text-[20px] text-neutral-500">Aucun article sauvegardé.</p>
+            <Link to="/articles" className="mt-8 inline-block font-serif text-[16px] text-primary-800 hover:text-primary-900">
               Voir les articles
             </Link>
           </div>

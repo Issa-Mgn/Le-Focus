@@ -10,8 +10,9 @@
   }
 
   body {
-    @apply bg-neutral-50 text-neutral-900 antialiased;
+    @apply bg-white text-neutral-900 antialiased;
     font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 14px;
   }
 
   h1,
@@ -27,11 +28,11 @@
 
 @layer components {
   .container-custom {
-    @apply max-w-6xl mx-auto px-5 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8;
   }
 
   .btn-primary {
-    @apply relative bg-primary-700 text-white px-8 py-3.5 font-bold hover:bg-primary-800 transition-colors duration-200 overflow-hidden;
+    @apply relative bg-primary-600 text-white px-7 py-3 font-bold hover:bg-primary-700 transition-colors duration-200 overflow-hidden;
   }
 
   .btn-secondary {
@@ -57,10 +58,10 @@
   }
 
   .editorial-kicker {
-    @apply text-primary-800 font-bold uppercase;
+    @apply text-primary-600 font-bold uppercase;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.32em;
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
   }
 
   .page-hero {
@@ -68,15 +69,15 @@
   }
 
   .page-hero-inner {
-    @apply container-custom py-16 sm:py-20;
+    @apply container-custom py-9 sm:py-11;
   }
 
   .page-title {
-    @apply mt-3 text-5xl sm:text-6xl font-black leading-none text-neutral-950;
+    @apply mt-3 text-[30px] sm:text-[38px] font-black leading-tight text-neutral-950;
   }
 
   .focus-input {
-    @apply w-full border border-neutral-200 bg-white px-4 py-4 text-neutral-900 outline-none transition-colors focus:border-primary-700;
+    @apply w-full border border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors focus:border-primary-600;
     border-radius: 0;
   }
 }

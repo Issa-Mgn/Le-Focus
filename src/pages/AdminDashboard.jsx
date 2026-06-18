@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Eye, Download, FileText, TrendingUp, MoreHorizontal, Edit } from 'lucide-react';
-import AdminDashboardSkeleton from '../components/AdminDashboardSkeleton';
+import Loader from '../components/Loader';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -65,7 +65,7 @@ const AdminDashboard = () => {
   }, []);
 
   if (isLoading) {
-    return <AdminDashboardSkeleton />;
+    return <Loader />;
   }
 
   return (

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BookOpen, Bookmark, Home, Info, Mail, Menu, Search, X } from 'lucide-react';
+import { BookOpen, Bookmark, ChevronDown, Home, Info, Mail, Menu, Search, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { categories } from '../data/mockData';
 
 const navLinks = [
   { to: '/', label: 'Accueil', icon: Home },
@@ -14,14 +15,14 @@ const navLinks = [
 
 const Logo = () => (
   <div className="flex items-center gap-3">
-    <div className="flex h-[54px] w-[54px] items-center justify-center bg-primary-700 text-[31px] font-black leading-none text-white sm:h-[68px] sm:w-[68px]">
+    <div className="flex h-10 w-10 items-center justify-center bg-primary-500 text-[22px] font-black leading-none text-white md:h-11 md:w-11">
       <span className="font-serif">F</span>
     </div>
     <div>
-      <div className="font-serif text-[27px] font-black leading-none text-neutral-950 sm:text-[32px]">
+      <div className="font-serif text-[20px] font-black leading-none text-neutral-950 md:text-[22px]">
         Le Focus
       </div>
-      <div className="mt-2 font-display text-[10px] font-medium uppercase tracking-[0.32em] text-neutral-500 sm:text-[11px]">
+      <div className="mt-1.5 font-display text-[8px] font-medium uppercase tracking-[0.28em] text-neutral-500 md:text-[9px]">
         Porto-Novo • Journal
       </div>
     </div>
@@ -48,24 +49,66 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200 bg-white shadow-[0_3px_10px_rgba(0,0,0,0.06)]">
-      <div className="container-custom flex h-[86px] items-center justify-between sm:h-[96px]">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+      <div className="container-custom flex h-[76px] items-center justify-between md:h-[82px]">
         <Link to="/" onClick={() => setIsOpen(false)} aria-label="Le Focus - Accueil">
           <Logo />
         </Link>
 
-        <div className="flex items-center gap-4">
+        <nav className="hidden items-center gap-6 md:flex">
+          {navLinks.map((link) => {
+            const active = location.pathname === link.to;
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`font-display text-[13px] font-medium transition hover:text-primary-600 ${active ? 'text-primary-600' : 'text-neutral-700'}`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <div className="group relative">
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 font-display text-[13px] font-medium text-neutral-700 transition hover:text-primary-600"
+            >
+              Rubriques <ChevronDown size={15} strokeWidth={1.8} />
+            </button>
+            <div className="invisible absolute left-1/2 top-full grid w-[300px] -translate-x-1/2 translate-y-3 grid-cols-2 gap-x-6 gap-y-4 border border-neutral-200 bg-white p-6 opacity-0 shadow-xl transition group-hover:visible group-hover:translate-y-2 group-hover:opacity-100">
+              {categories.map((category) => (
+                <Link
+                  key={category}
+                  to={`/category/${category.toLowerCase()}`}
+                  className="font-display text-[13px] text-neutral-600 transition hover:text-primary-600"
+                >
+                  {category}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        <div className="flex items-center gap-2 md:gap-4">
           <button
             type="button"
             onClick={() => {
               setShowSearch((value) => !value);
               setIsOpen(false);
             }}
-            className="grid h-11 w-11 place-items-center text-neutral-700 transition hover:text-primary-700"
+            className="grid h-10 w-10 place-items-center text-neutral-700 transition hover:text-primary-600"
             aria-label={showSearch ? 'Fermer la recherche' : 'Rechercher'}
           >
-            {showSearch ? <X size={27} strokeWidth={2} /> : <Search size={27} strokeWidth={2} />}
+            {showSearch ? <X size={22} strokeWidth={2} /> : <Search size={22} strokeWidth={2} />}
           </button>
+
+          <Link
+            to="/order-insertion"
+            className="hidden bg-primary-500 px-5 py-3 font-display text-[12px] font-bold text-white transition hover:bg-primary-700 md:inline-block"
+          >
+            Commander
+          </Link>
 
           <button
             type="button"
@@ -73,10 +116,10 @@ const Navbar = () => {
               setIsOpen((value) => !value);
               setShowSearch(false);
             }}
-            className="grid h-11 w-11 place-items-center text-neutral-900 transition hover:text-primary-700"
+            className="grid h-10 w-10 place-items-center text-neutral-900 transition hover:text-primary-600 md:hidden"
             aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
           >
-            {isOpen ? <X size={31} strokeWidth={2} /> : <Menu size={31} strokeWidth={2} />}
+            {isOpen ? <X size={27} strokeWidth={2} /> : <Menu size={27} strokeWidth={2} />}
           </button>
         </div>
       </div>
@@ -89,19 +132,19 @@ const Navbar = () => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden border-t border-neutral-100 bg-white"
           >
-            <form onSubmit={handleSearch} className="container-custom flex items-center gap-3 py-5">
+            <form onSubmit={handleSearch} className="container-custom flex items-center gap-3 py-4">
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
                 placeholder="Rechercher un article..."
-                className="focus-input h-14 flex-1 text-base"
+                className="focus-input h-12 flex-1 text-sm"
               />
-              <button type="submit" className="h-14 bg-primary-700 px-7 font-bold uppercase text-white hover:bg-primary-800">
+              <button type="submit" className="h-12 bg-primary-600 px-6 font-bold uppercase text-white hover:bg-primary-700">
                 OK
               </button>
               <button type="button" onClick={() => setShowSearch(false)} className="grid h-12 w-10 place-items-center text-neutral-500" aria-label="Fermer">
-                <X size={22} />
+                <X size={20} />
               </button>
             </form>
           </motion.div>
@@ -114,7 +157,7 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-neutral-100 bg-white"
+            className="overflow-hidden border-t border-neutral-100 bg-white md:hidden"
           >
             <div className="container-custom py-5">
               <div className="divide-y divide-neutral-100">
@@ -126,7 +169,7 @@ const Navbar = () => {
                       key={link.to}
                       to={link.to}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-4 py-4 font-display text-[15px] font-semibold ${active ? 'text-primary-700' : 'text-neutral-700'}`}
+                      className={`flex items-center gap-4 py-4 font-display text-[15px] font-semibold ${active ? 'text-primary-600' : 'text-neutral-700'}`}
                     >
                       <Icon size={19} strokeWidth={1.7} />
                       {link.label}
@@ -137,7 +180,7 @@ const Navbar = () => {
               <Link
                 to="/order-insertion"
                 onClick={() => setIsOpen(false)}
-                className="mt-5 block bg-primary-700 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-800"
+                className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-600"
               >
                 Commander une insertion
               </Link>

@@ -35,8 +35,8 @@ const AllArticles = () => {
       </section>
 
       <section className="py-10 sm:py-14">
-        <div className="container-custom max-w-4xl">
-          <div className="grid gap-9">
+        <div className="container-custom">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {isLoading ? (
               Array.from({ length: 4 }).map((_, i) => <ArticleCardSkeleton key={i} />)
             ) : (
@@ -45,7 +45,7 @@ const AllArticles = () => {
           </div>
 
           {!isLoading && sortedArticles.length === 0 && (
-            <div className="py-24 text-center font-serif text-2xl text-neutral-500">Aucun article trouvé</div>
+            <div className="py-24 text-center font-serif text-[20px] text-neutral-500">Aucun article trouvé</div>
           )}
         </div>
       </section>

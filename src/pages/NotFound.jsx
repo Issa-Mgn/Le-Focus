@@ -49,7 +49,7 @@ const NotFound = () => {
             className="mb-8"
           >
             <motion.h1 
-              className="text-[200px] md:text-[300px] font-bold leading-none bg-gradient-to-r from-white via-primary-200 to-primary-400 bg-clip-text text-transparent"
+              className="text-[120px] md:text-[180px] font-bold leading-none bg-gradient-to-r from-white via-primary-200 to-primary-400 bg-clip-text text-transparent"
               animate={{
                 backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
               }}
@@ -94,10 +94,10 @@ const NotFound = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
+            <h2 className="text-[28px] md:text-[36px] font-serif font-bold text-white mb-6">
               Page Introuvable
             </h2>
-            <p className="text-xl text-neutral-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base text-neutral-300 mb-12 max-w-2xl mx-auto leading-relaxed">
               Oups ! La page que vous recherchez semble avoir disparu dans les méandres du web. 
               Peut-être a-t-elle été déplacée ou n'existe-t-elle plus.
             </p>

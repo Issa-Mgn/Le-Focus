@@ -51,12 +51,12 @@ const OrderInsertion = () => {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16">
-        <div className="container-custom max-w-4xl">
-          <form onSubmit={handleSubmit} className="space-y-8">
+      <section className="py-10 sm:py-12">
+        <div className="container-custom max-w-3xl">
+          <form onSubmit={handleSubmit} className="space-y-7">
             <div>
-              <label className="mb-4 block font-display text-sm font-bold uppercase tracking-[0.12em] text-neutral-500">Type de service *</label>
-              <select name="service" value={formData.service} onChange={handleChange} required className="focus-input h-20 text-[23px]">
+              <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Type de service *</label>
+              <select name="service" value={formData.service} onChange={handleChange} required className="focus-input h-14 text-base">
                 <option value="">Sélectionner...</option>
                 {services.map((service) => (
                   <option key={service} value={service}>{service}</option>
@@ -64,28 +64,28 @@ const OrderInsertion = () => {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid gap-6 sm:grid-cols-2">
               <div>
-                <label className="mb-4 block font-display text-sm font-bold uppercase tracking-[0.12em] text-neutral-500">Nom *</label>
-                <input name="name" value={formData.name} onChange={handleChange} required className="focus-input h-20" />
+                <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Nom *</label>
+                <input name="name" value={formData.name} onChange={handleChange} required className="focus-input h-14" />
               </div>
               <div>
-                <label className="mb-4 block font-display text-sm font-bold uppercase tracking-[0.12em] text-neutral-500">Email *</label>
-                <input name="email" type="email" value={formData.email} onChange={handleChange} required className="focus-input h-20" />
+                <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Email *</label>
+                <input name="email" type="email" value={formData.email} onChange={handleChange} required className="focus-input h-14" />
               </div>
             </div>
 
             <div>
-              <label className="mb-4 block font-display text-sm font-bold uppercase tracking-[0.12em] text-neutral-500">Téléphone *</label>
-              <input name="phone" type="tel" value={formData.phone} onChange={handleChange} required className="focus-input h-20" />
+              <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Téléphone *</label>
+              <input name="phone" type="tel" value={formData.phone} onChange={handleChange} required className="focus-input h-14" />
             </div>
 
             <div>
-              <label className="mb-4 block font-display text-sm font-bold uppercase tracking-[0.12em] text-neutral-500">Message / détails supplémentaires</label>
+              <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Message / détails supplémentaires</label>
               <textarea name="message" value={formData.message} onChange={handleChange} rows={7} className="focus-input resize-none" />
             </div>
 
-            <button className="w-full bg-primary-700 px-8 py-6 font-display text-[24px] font-bold text-white hover:bg-primary-800">
+            <button className="w-full bg-primary-600 px-8 py-5 font-display text-base font-bold text-white hover:bg-primary-700">
               Envoyer la demande
             </button>
           </form>

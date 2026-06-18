@@ -9,18 +9,18 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#DC2626',
-                    50: '#FEF2F2',
-                    100: '#FEE2E2',
-                    200: '#FECACA',
-                    300: '#FCA5A5',
-                    400: '#F87171',
-                    500: '#EF4444',
-                    600: '#DC2626',
-                    700: '#B91C1C',
-                    800: '#991B1B',
-                    900: '#7F1D1D',
-                    950: '#450A0A',
+                    DEFAULT: '#E60000',
+                    50: '#FFF1F1',
+                    100: '#FFE1E1',
+                    200: '#FFC8C8',
+                    300: '#FF9B9B',
+                    400: '#FF5C5C',
+                    500: '#FF1A1A',
+                    600: '#E60000',
+                    700: '#CC0000',
+                    800: '#A30000',
+                    900: '#730000',
+                    950: '#3D0000',
                 },
                 neutral: {
                     50: '#FAFAFA',
@@ -88,8 +88,8 @@ export default {
             },
             boxShadow: {
                 'glow': '0 0 20px rgba(220, 38, 38, 0.3)',
-                'glow-lg': '0 0 40px rgba(220, 38, 38, 0.4)',
-                'inner-glow': 'inset 0 0 20px rgba(220, 38, 38, 0.1)',
+                'glow-lg': '0 0 40px rgba(230, 0, 0, 0.28)',
+                'inner-glow': 'inset 0 0 20px rgba(230, 0, 0, 0.08)',
             },
             backdropBlur: {
                 xs: '2px',
