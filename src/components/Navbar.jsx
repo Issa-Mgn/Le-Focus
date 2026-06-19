@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Bookmark, ChevronDown, Home, Info, Mail, Menu, Search, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { categories } from '../data/mockData';
+import logo from '../assets/logo.jpg';
 
 const navLinks = [
   { to: '/', label: 'Accueil', icon: Home },
@@ -15,9 +16,11 @@ const navLinks = [
 
 const Logo = () => (
   <div className="flex items-center gap-3">
-    <div className="flex h-10 w-10 items-center justify-center bg-primary-500 text-[22px] font-black leading-none text-white md:h-11 md:w-11">
-      <span className="font-serif">F</span>
-    </div>
+    <img 
+      src={logo} 
+      alt="Le Focus" 
+      className="h-10 w-10 rounded-md object-cover md:h-11 md:w-11"
+    />
     <div>
       <div className="font-serif text-[20px] font-black leading-none text-neutral-950 md:text-[22px]">
         Le Focus

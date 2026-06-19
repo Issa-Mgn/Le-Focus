@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Send, Twitter } from 'lucide-react';
+import logo from '../assets/logo.jpg';
 
 const Footer = () => {
   const categories = ['Politique', 'Économie', 'Société', 'Culture', 'Sport'];
@@ -17,7 +18,11 @@ const Footer = () => {
         <div className="grid gap-12 md:grid-cols-[1.25fr_1fr_1.15fr_1.2fr]">
           <div>
             <div className="mb-6 flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center bg-primary-500 font-serif text-[22px] font-black text-white">F</div>
+              <img 
+                src={logo} 
+                alt="Le Focus" 
+                className="h-10 w-10 rounded-md object-cover"
+              />
               <div>
                 <h2 className="font-serif text-[19px] font-black leading-none text-white">Le Focus</h2>
                 <p className="mt-2 font-display text-[9px] uppercase tracking-[0.24em] text-neutral-600">Porto-Novo</p>

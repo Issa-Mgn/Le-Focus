@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, Mail, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.jpg';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('miganwabi@gmail.com');
@@ -37,9 +38,11 @@ const AdminLogin = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-12 h-12 bg-primary-500 text-white flex items-center justify-center font-bold text-2xl rounded-lg shadow-lg">
-              F
-            </div>
+            <img 
+              src={logo} 
+              alt="Le Focus" 
+              className="w-12 h-12 rounded-lg object-cover shadow-lg"
+            />
             <span className="text-3xl font-serif font-bold text-white">Le Focus</span>
           </div>
           <p className="text-neutral-400 text-sm">Espace Administrateur</p>

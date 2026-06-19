@@ -16,7 +16,7 @@ const Loader = () => {
         .loader-spinner {
           width: 44.8px;
           height: 44.8px;
-          color: #E60000;
+          color: #E4484C;
           position: relative;
           background: radial-gradient(11.2px, currentColor 94%, transparent);
         }
