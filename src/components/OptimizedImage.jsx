@@ -47,7 +47,7 @@ const OptimizedImage = ({
         style={{ minHeight: '200px' }}
       >
         <div className="w-full h-full flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );

@@ -37,7 +37,7 @@ const AdminLogin = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-12 h-12 bg-primary-600 text-white flex items-center justify-center font-bold text-2xl rounded-lg shadow-lg">
+            <div className="w-12 h-12 bg-primary-500 text-white flex items-center justify-center font-bold text-2xl rounded-lg shadow-lg">
               F
             </div>
             <span className="text-3xl font-serif font-bold text-white">Le Focus</span>
@@ -48,7 +48,7 @@ const AdminLogin = () => {
         {/* Login Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="flex items-center justify-center w-16 h-16 bg-primary-50 rounded-full mx-auto mb-6">
-            <Lock className="text-primary-600" size={32} />
+            <Lock className="text-primary-500" size={32} />
           </div>
           
           <h2 className="text-2xl font-bold text-center mb-2 text-neutral-900">Connexion</h2>
@@ -107,7 +107,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-700 text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-700/20 flex items-center justify-center gap-2"
+              className="w-full bg-primary-500-temp text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-500-temp/20 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="animate-spin" size={20} /> : 'Se connecter'}
             </button>

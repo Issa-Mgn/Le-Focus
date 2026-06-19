@@ -68,7 +68,7 @@ const AdminSettings = () => {
           className="bg-white p-8 rounded-xl shadow-sm border border-neutral-100"
         >
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-100">
-            <div className="p-2 bg-primary-50 text-primary-600 rounded-lg">
+            <div className="p-2 bg-primary-50 text-primary-500 rounded-lg">
               <Globe size={20} />
             </div>
             <h2 className="text-lg font-bold text-neutral-900">Général</h2>
@@ -109,7 +109,7 @@ const AdminSettings = () => {
           className="bg-white p-8 rounded-xl shadow-sm border border-neutral-100"
         >
           <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-100">
-            <div className="p-2 bg-primary-50 text-primary-600 rounded-lg">
+            <div className="p-2 bg-primary-50 text-primary-500 rounded-lg">
               <User size={20} />
             </div>
             <h2 className="text-lg font-bold text-neutral-900">Auteur par défaut</h2>
@@ -135,7 +135,7 @@ const AdminSettings = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="flex items-center gap-2 bg-primary-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 bg-primary-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-500-temp transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>Enregistrement...</>

@@ -80,7 +80,7 @@ const DebugArticles = () => {
                   onClick={() => setSelectedArticle(article)}
                   className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                     selectedArticle?.id === article.id
-                      ? 'border-primary-600 bg-primary-50'
+                      ? 'border-primary-500 bg-primary-50'
                       : 'border-neutral-200 hover:border-primary-300'
                   }`}
                 >

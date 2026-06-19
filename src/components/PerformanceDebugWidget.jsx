@@ -56,7 +56,7 @@ const PerformanceDebugWidget = () => {
       {/* Bouton toggle */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-primary-600 to-primary-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+        className="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-primary-500 to-primary-500-temp text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
         title="Performance Metrics"
       >
         <Activity size={20} />

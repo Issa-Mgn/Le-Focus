@@ -36,7 +36,7 @@ const About = () => {
 
           <div className="mt-10 space-y-6">
             {values.map(([title, description]) => (
-              <div key={title} className="border-t-2 border-primary-600 bg-white px-6 py-6">
+              <div key={title} className="border-t-2 border-primary-500 bg-white px-6 py-6">
                 <h3 className="font-serif text-[20px] font-black text-neutral-950">{title}</h3>
                 <p className="mt-3 font-serif text-[15px] leading-7 text-neutral-600">{description}</p>
               </div>
@@ -46,7 +46,7 @@ const About = () => {
           <div className="mt-12">
             <h2 className="font-serif text-[24px] font-black text-neutral-950">Nous contacter</h2>
             <p className="mt-3 font-serif text-[16px] text-neutral-600">Une question ? Écrivez-nous.</p>
-            <Link to="/contact" className="mt-6 inline-block bg-[#E60000] px-7 py-4 font-display text-sm font-bold text-white hover:bg-primary-700">
+            <Link to="/contact" className="mt-6 inline-block bg-[#E60000] px-7 py-4 font-display text-sm font-bold text-white hover:bg-primary-500-temp">
               Page Contact
             </Link>
           </div>

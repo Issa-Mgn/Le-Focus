@@ -12,7 +12,7 @@ const AdminLayout = ({ children }) => {
       {/* Mobile Header */}
       <div className="md:hidden bg-white border-b border-neutral-200 p-4 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary-600 flex items-center justify-center font-bold text-lg rounded text-white">
+          <div className="w-8 h-8 bg-primary-500 flex items-center justify-center font-bold text-lg rounded text-white">
             F
           </div>
           <span className="text-xl font-serif font-bold text-neutral-900">Le Focus</span>

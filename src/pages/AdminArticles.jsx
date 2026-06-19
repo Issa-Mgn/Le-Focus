@@ -73,7 +73,7 @@ const AdminArticles = () => {
         </div>
         <Link 
           to="/admin/new-article"
-          className="bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center gap-2"
+          className="bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-500-temp transition-colors flex items-center gap-2"
         >
           <FileText size={20} />
           Nouvel Article
@@ -148,7 +148,7 @@ const AdminArticles = () => {
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-500-temp">
                       {article.category}
                     </span>
                   </td>
@@ -176,7 +176,7 @@ const AdminArticles = () => {
                     <div className="flex items-center justify-end gap-2">
                       <Link 
                         to={`/article/${article.id}`}
-                        className="p-2 text-neutral-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                        className="p-2 text-neutral-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
                         title="Voir"
                       >
                         <Eye size={18} />

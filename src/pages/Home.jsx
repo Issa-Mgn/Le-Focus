@@ -127,7 +127,7 @@ const Home = () => {
                 </Link>
               </div>
               <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
-                <span className="h-1.5 w-8 bg-primary-600" />
+                <span className="h-1.5 w-8 bg-primary-500" />
                 <span className="h-1.5 w-2 rounded-full bg-white/45" />
               </div>
             </div>
@@ -141,7 +141,7 @@ const Home = () => {
         <div className="container-custom overflow-x-auto">
           <div className="flex min-w-max gap-4 font-display text-[12px] text-neutral-500">
             {categories.map((category) => (
-              <Link key={category} to={`/category/${category.toLowerCase()}`} className="whitespace-nowrap hover:text-primary-600">
+              <Link key={category} to={`/category/${category.toLowerCase()}`} className="whitespace-nowrap hover:text-primary-500">
                 {category}
               </Link>
             ))}
@@ -181,9 +181,9 @@ const Home = () => {
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="votre@email.com"
-              className="min-w-0 flex-1 border border-neutral-700 bg-neutral-800 px-5 py-3 font-display text-sm text-white outline-none placeholder:text-neutral-500 focus:border-primary-600"
+              className="min-w-0 flex-1 border border-neutral-700 bg-neutral-800 px-5 py-3 font-display text-sm text-white outline-none placeholder:text-neutral-500 focus:border-primary-500"
             />
-            <button disabled={isSubscribing} className="bg-primary-600 px-7 font-display text-sm font-bold text-white hover:bg-primary-700 disabled:opacity-70">
+            <button disabled={isSubscribing} className="bg-primary-500 px-7 font-display text-sm font-bold text-white hover:bg-primary-500-temp disabled:opacity-70">
               OK
             </button>
           </form>

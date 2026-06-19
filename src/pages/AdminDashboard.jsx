@@ -149,7 +149,7 @@ const AdminDashboard = () => {
                 </div>
                 <div className="w-full sm:w-24 bg-neutral-100 rounded-full h-2 overflow-hidden flex-shrink-0">
                   <div 
-                    className="bg-primary-600 h-full rounded-full" 
+                    className="bg-primary-500 h-full rounded-full" 
                     style={{ width: `${Math.min(((article.views || 0) / 100), 100)}%` }}
                   ></div>
                 </div>
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
       <div className="bg-white rounded-xl shadow-sm border border-neutral-100 overflow-hidden">
         <div className="p-6 border-b border-neutral-100 flex justify-between items-center">
           <h3 className="text-lg font-bold">Articles Récents</h3>
-          <button className="text-primary-600 text-sm font-medium hover:underline">Voir tout</button>
+          <button className="text-primary-500 text-sm font-medium hover:underline">Voir tout</button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
@@ -219,7 +219,7 @@ const StatsCard = ({ title, value, icon: Icon, trend, color }) => {
     <div className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100">
       <div className="flex justify-between items-start mb-4">
         <div className={`p-3 rounded-lg bg-${color}-50 text-${color}-600`}>
-          <Icon size={24} className="text-primary-600" />
+          <Icon size={24} className="text-primary-500" />
         </div>
         <span className="text-green-600 text-xs font-bold bg-green-50 px-2 py-1 rounded-full">{trend}</span>
       </div>

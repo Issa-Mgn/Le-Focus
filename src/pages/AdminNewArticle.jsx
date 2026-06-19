@@ -269,7 +269,7 @@ const AdminNewArticle = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-700 font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
               <Type size={18} />
               <span>Informations Principales</span>
             </div>
@@ -309,14 +309,14 @@ const AdminNewArticle = () => {
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3 text-primary-700 font-bold uppercase tracking-wider text-sm">
+              <div className="flex items-center gap-3 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
                 <FileText size={18} />
                 <span>Contenu de l'article ({paragraphs.length} paragraphe{paragraphs.length > 1 ? 's' : ''})</span>
               </div>
               <motion.button
                 type="button"
                 onClick={addParagraph}
-                className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-500-temp transition-colors text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -329,7 +329,7 @@ const AdminNewArticle = () => {
               {paragraphs.map((paragraph, index) => (
                 <div key={index} className="relative group">
                   <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm mt-2">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-500-temp rounded-full flex items-center justify-center font-bold text-sm mt-2">
                       {index + 1}
                     </div>
                     <textarea 
@@ -375,7 +375,7 @@ const AdminNewArticle = () => {
             transition={{ delay: 0.2 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-700 font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
               <Layout size={18} />
               <span>Métadonnées</span>
             </div>
@@ -404,7 +404,7 @@ const AdminNewArticle = () => {
               <div>
                 <label className="block text-sm font-bold text-neutral-700 mb-2">Auteur</label>
                 <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs">
+                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-500-temp font-bold text-xs">
                     WM
                   </div>
                   <span className="font-medium text-neutral-700">{author}</span>
@@ -420,7 +420,7 @@ const AdminNewArticle = () => {
             transition={{ delay: 0.3 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-700 font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
               <ImageIcon size={18} />
               <span>Médias</span>
             </div>
@@ -451,7 +451,7 @@ const AdminNewArticle = () => {
                       ) : (
                         <label className="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-neutral-200 rounded-lg cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-all">
                           {uploadingImages[index] ? (
-                            <Loader2 size={20} className="text-primary-600 animate-spin" />
+                            <Loader2 size={20} className="text-primary-500 animate-spin" />
                           ) : (
                             <>
                               <Upload size={20} className="text-neutral-400 mb-1" />
@@ -495,7 +495,7 @@ const AdminNewArticle = () => {
                     </button>
                   </div>
                 ) : (
-                  <label className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-neutral-200 rounded-xl cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-all text-neutral-500 hover:text-primary-600 font-medium text-sm">
+                  <label className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-neutral-200 rounded-xl cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-all text-neutral-500 hover:text-primary-500 font-medium text-sm">
                     {uploadingPdf ? (
                       <>
                         <Loader2 size={16} className="animate-spin" />
@@ -531,7 +531,7 @@ const AdminNewArticle = () => {
             transition={{ delay: 0.4 }}
             type="submit"
             disabled={isPublishing}
-            className="w-full btn-primary py-4 text-lg shadow-xl shadow-primary-600/20 hover:shadow-primary-600/40 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn-primary py-4 text-lg shadow-xl shadow-primary-500/20 hover:shadow-primary-500/40 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPublishing ? (
               <>
@@ -584,7 +584,7 @@ const AdminNewArticle = () => {
                 {/* Category Badge */}
                 {category && (
                   <div className="mb-4">
-                    <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-700 rounded-full text-sm font-bold">
+                    <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-500-temp rounded-full text-sm font-bold">
                       {category}
                     </span>
                   </div>

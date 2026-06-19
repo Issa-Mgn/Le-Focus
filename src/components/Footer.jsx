@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="grid gap-12 md:grid-cols-[1.25fr_1fr_1.15fr_1.2fr]">
           <div>
             <div className="mb-6 flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center bg-primary-600 font-serif text-[22px] font-black text-white">F</div>
+              <div className="grid h-10 w-10 place-items-center bg-primary-500 font-serif text-[22px] font-black text-white">F</div>
               <div>
                 <h2 className="font-serif text-[19px] font-black leading-none text-white">Le Focus</h2>
                 <p className="mt-2 font-display text-[9px] uppercase tracking-[0.24em] text-neutral-600">Porto-Novo</p>
@@ -30,7 +30,7 @@ const Footer = () => {
 
             <div className="mt-6 flex gap-3">
               {socials.map((social) => (
-                <a key={social.label} href="#" aria-label={social.label} className="grid h-9 w-9 place-items-center bg-neutral-800 text-neutral-500 transition hover:bg-primary-600 hover:text-white">
+                <a key={social.label} href="#" aria-label={social.label} className="grid h-9 w-9 place-items-center bg-neutral-800 text-neutral-500 transition hover:bg-primary-500 hover:text-white">
                   <social.icon size={17} />
                 </a>
               ))}

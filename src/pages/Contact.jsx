@@ -60,7 +60,7 @@ const Contact = () => {
               <label className="mb-3 block font-display text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">Message</label>
               <textarea name="message" value={formData.message} onChange={handleChange} rows={7} className="focus-input resize-none" required />
             </div>
-            <button disabled={isSubmitting} className="mt-5 block bg-primary-600 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-700">
+            <button disabled={isSubmitting} className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-500-temp">
               {isSubmitting && <Loader2 size={18} className="animate-spin" />}
               Envoyer
             </button>

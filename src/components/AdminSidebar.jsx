@@ -65,7 +65,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               className={clsx(
                 "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-sm font-medium",
                 isActive 
-                  ? "bg-primary-700 text-white shadow-lg shadow-primary-900/20" 
+                  ? "bg-primary-500-temp text-white shadow-lg shadow-primary-900/20" 
                   : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
               )}
             >

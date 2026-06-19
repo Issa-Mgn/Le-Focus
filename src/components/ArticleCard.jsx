@@ -28,7 +28,7 @@ const ArticleCard = ({ article }) => {
             decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <span className="absolute left-4 top-4 bg-white px-3 py-2 font-display text-[9px] font-bold uppercase tracking-[0.12em] text-primary-700">
+          <span className="absolute left-4 top-4 bg-white px-3 py-2 font-display text-[9px] font-bold uppercase tracking-[0.12em] text-primary-500-temp">
             {article.category || 'Actualité'}
           </span>
         </div>
@@ -42,7 +42,7 @@ const ArticleCard = ({ article }) => {
             </span>
           </div>
 
-          <h3 className="mb-2 font-serif text-[17px] font-black leading-snug text-neutral-950 transition group-hover:text-primary-700">
+          <h3 className="mb-2 font-serif text-[17px] font-black leading-snug text-neutral-950 transition group-hover:text-primary-500-temp">
             {article.title}
           </h3>
           <p className="line-clamp-2 text-[13px] leading-6 text-neutral-600">
@@ -51,7 +51,7 @@ const ArticleCard = ({ article }) => {
 
           <div className="mt-6 flex items-center justify-between border-t border-neutral-100 pt-4">
             <div className="flex items-center gap-3">
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-600 font-display text-[11px] font-bold text-white">
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-500 font-display text-[11px] font-bold text-white">
                 {(article.author || 'Wabi MIGAN')
                   .split(' ')
                   .map((word) => word[0])
@@ -65,7 +65,7 @@ const ArticleCard = ({ article }) => {
             <button
               type="button"
               onClick={handleBookmark}
-              className="grid h-9 w-9 place-items-center text-neutral-300 transition hover:text-primary-600"
+              className="grid h-9 w-9 place-items-center text-neutral-300 transition hover:text-primary-500"
               aria-label={isSaved ? 'Retirer des sauvegardes' : 'Sauvegarder'}
             >
               <Bookmark size={18} fill={isSaved ? 'currentColor' : 'none'} />

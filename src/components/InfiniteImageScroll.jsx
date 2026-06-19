@@ -148,7 +148,7 @@ const InfiniteImageScroll = ({ article }) => {
                     <div className="max-w-3xl text-left">
                         {/* Badge - Amélioré */}
                         <motion.div 
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-600/95 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider mb-4 drop-shadow-lg border border-primary-500/30"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-500/95 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider mb-4 drop-shadow-lg border border-primary-500/30"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}

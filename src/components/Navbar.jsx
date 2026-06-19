@@ -62,7 +62,7 @@ const Navbar = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`font-display text-[13px] font-medium transition hover:text-primary-600 ${active ? 'text-primary-600' : 'text-neutral-700'}`}
+                className={`font-display text-[13px] font-medium transition hover:text-primary-500 ${active ? 'text-primary-500' : 'text-neutral-700'}`}
               >
                 {link.label}
               </Link>
@@ -72,7 +72,7 @@ const Navbar = () => {
           <div className="group relative">
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 font-display text-[13px] font-medium text-neutral-700 transition hover:text-primary-600"
+              className="inline-flex items-center gap-1.5 font-display text-[13px] font-medium text-neutral-700 transition hover:text-primary-500"
             >
               Rubriques <ChevronDown size={15} strokeWidth={1.8} />
             </button>
@@ -81,7 +81,7 @@ const Navbar = () => {
                 <Link
                   key={category}
                   to={`/category/${category.toLowerCase()}`}
-                  className="font-display text-[13px] text-neutral-600 transition hover:text-primary-600"
+                  className="font-display text-[13px] text-neutral-600 transition hover:text-primary-500"
                 >
                   {category}
                 </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
               setShowSearch((value) => !value);
               setIsOpen(false);
             }}
-            className="grid h-10 w-10 place-items-center text-neutral-700 transition hover:text-primary-600"
+            className="grid h-10 w-10 place-items-center text-neutral-700 transition hover:text-primary-500"
             aria-label={showSearch ? 'Fermer la recherche' : 'Rechercher'}
           >
             {showSearch ? <X size={22} strokeWidth={2} /> : <Search size={22} strokeWidth={2} />}
@@ -105,7 +105,7 @@ const Navbar = () => {
 
           <Link
             to="/order-insertion"
-            className="hidden bg-primary-500 px-5 py-3 font-display text-[12px] font-bold text-white transition hover:bg-primary-700 md:inline-block"
+            className="hidden bg-primary-500 px-5 py-3 font-display text-[12px] font-bold text-white transition hover:bg-primary-500-temp md:inline-block"
           >
             Commander
           </Link>
@@ -116,7 +116,7 @@ const Navbar = () => {
               setIsOpen((value) => !value);
               setShowSearch(false);
             }}
-            className="grid h-10 w-10 place-items-center text-neutral-900 transition hover:text-primary-600 md:hidden"
+            className="grid h-10 w-10 place-items-center text-neutral-900 transition hover:text-primary-500 md:hidden"
             aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
           >
             {isOpen ? <X size={27} strokeWidth={2} /> : <Menu size={27} strokeWidth={2} />}
@@ -140,7 +140,7 @@ const Navbar = () => {
                 placeholder="Rechercher un article..."
                 className="focus-input h-12 flex-1 text-sm"
               />
-              <button type="submit" className="h-12 bg-primary-600 px-6 font-bold uppercase text-white hover:bg-primary-700">
+              <button type="submit" className="h-12 bg-primary-500 px-6 font-bold uppercase text-white hover:bg-primary-500-temp">
                 OK
               </button>
               <button type="button" onClick={() => setShowSearch(false)} className="grid h-12 w-10 place-items-center text-neutral-500" aria-label="Fermer">
@@ -169,7 +169,7 @@ const Navbar = () => {
                       key={link.to}
                       to={link.to}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-4 py-4 font-display text-[15px] font-semibold ${active ? 'text-primary-600' : 'text-neutral-700'}`}
+                      className={`flex items-center gap-4 py-4 font-display text-[15px] font-semibold ${active ? 'text-primary-500' : 'text-neutral-700'}`}
                     >
                       <Icon size={19} strokeWidth={1.7} />
                       {link.label}
@@ -180,7 +180,7 @@ const Navbar = () => {
               <Link
                 to="/order-insertion"
                 onClick={() => setIsOpen(false)}
-                className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-600"
+                className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-500"
               >
                 Commander une insertion
               </Link>

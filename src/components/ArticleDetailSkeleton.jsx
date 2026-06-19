@@ -9,7 +9,7 @@ const ArticleDetailSkeleton = () => {
         <Skeleton className="w-full h-full opacity-20" />
         
         <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 container-custom z-20">
-            <Skeleton className="h-4 w-32 bg-primary-600/50 mb-4" />
+            <Skeleton className="h-4 w-32 bg-primary-500/50 mb-4" />
             <Skeleton className="h-8 md:h-12 w-3/4 bg-white/20 mb-6" />
             <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">

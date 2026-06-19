@@ -53,7 +53,7 @@ const ArticleDetail = () => {
     return (
       <div className="container-custom py-24 text-center">
         <h1 className="font-serif text-[26px] font-black">Article non trouvé</h1>
-        <Link to="/" className="mt-5 inline-block text-primary-700">Retour à l'accueil</Link>
+        <Link to="/" className="mt-5 inline-block text-primary-500-temp">Retour à l'accueil</Link>
       </div>
     );
   }
@@ -70,7 +70,26 @@ const ArticleDetail = () => {
     }
     setDownloading(true);
     try {
+      // Incrémenter les téléchargements
       api.articles.incrementDownloads(article.id);
+      
+      // Créer un nom de fichier propre
+      const fileName = `${article.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`;
+      
+      // Télécharger le PDF avec le bon nom
+      const response = await fetch(article.pdf);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erreur de téléchargement:', error);
+      // Fallback : ouvrir dans un nouvel onglet si le téléchargement échoue
       window.open(article.pdf, '_blank');
     } finally {
       setTimeout(() => setDownloading(false), 1000);
@@ -78,30 +97,24 @@ const ArticleDetail = () => {
   };
 
   const handleShare = async () => {
+    // Vérifier si l'API Web Share est disponible
+    if (!navigator.share) {
+      alert('Le partage n\'est pas disponible sur ce navigateur.\n\nUtilisez un appareil mobile pour partager.');
+      return;
+    }
+
     setSharing(true);
     try {
-      // Vérifier si l'API Web Share est disponible
-      if (navigator.share) {
-        await navigator.share({
-          title: article.title,
-          text: article.excerpt || article.title,
-          url: window.location.href
-        });
-      } else {
-        // Fallback pour PC : Copier le lien
-        await navigator.clipboard.writeText(window.location.href);
-        alert('✅ Lien copié dans le presse-papier !\n\nVous pouvez maintenant le coller sur WhatsApp, Facebook, etc.');
-      }
+      await navigator.share({
+        title: article.title,
+        text: article.excerpt || article.title,
+        url: window.location.href
+      });
     } catch (err) {
+      // Si l'utilisateur annule, on ne fait rien (AbortError)
       if (err.name !== 'AbortError') {
         console.error('Erreur de partage:', err);
-        // En cas d'erreur, essayer de copier dans le presse-papier
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          alert('✅ Lien copié dans le presse-papier !');
-        } catch (clipErr) {
-          alert('❌ Impossible de partager. Copiez manuellement le lien depuis la barre d\'adresse.');
-        }
+        alert('Une erreur est survenue lors du partage.');
       }
     } finally {
       setTimeout(() => setSharing(false), 500);
@@ -215,7 +228,7 @@ const ArticleDetail = () => {
             <button 
               onClick={handleShare} 
               disabled={sharing}
-              className="p-3 text-neutral-500 hover:text-primary-700 disabled:opacity-60" 
+              className="p-3 text-neutral-500 hover:text-primary-500-temp disabled:opacity-60" 
               aria-label="Partager"
             >
               {sharing ? <SpinnerSmall size={21} /> : <Share2 size={21} />}
@@ -224,7 +237,7 @@ const ArticleDetail = () => {
 
           <AudioPlayer text={`${article.excerpt || ''}. ${article.paragraphs?.join(' ') || article.content || ''}`} title="" />
 
-          <p className="mb-8 border-l-2 border-primary-600 pl-5 font-serif text-[17px] italic leading-7 text-neutral-600">
+          <p className="mb-8 border-l-2 border-primary-500 pl-5 font-serif text-[17px] italic leading-7 text-neutral-600">
             {article.excerpt}
           </p>
 
