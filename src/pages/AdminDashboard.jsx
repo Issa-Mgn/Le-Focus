@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Eye, Download, FileText, TrendingUp, MoreHorizontal, Edit } from 'lucide-react';
+import { Eye, Download, FileText, TrendingUp, MoreHorizontal, Edit, Share2 } from 'lucide-react';
 import Loader from '../components/Loader';
 
 const AdminDashboard = () => {
@@ -15,6 +15,46 @@ const AdminDashboard = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
+
+  const handleShareArticle = async (article) => {
+    // Vérifier si l'API Web Share est disponible
+    if (!navigator.share) {
+      alert('Le partage n\'est pas disponible sur ce navigateur.\n\nUtilisez un appareil mobile pour partager.');
+      return;
+    }
+
+    try {
+      const articleUrl = `${window.location.origin}/article/${article.id}`;
+      const contactInfo = '\n\nWABI MIGAN DG - Le Focus\nMTN: 0196768717\nCELTIIS: 0140496090';
+      
+      const shareData = {
+        title: article.title,
+        text: `${article.excerpt || article.title}\n\n${articleUrl}${contactInfo}`,
+      };
+
+      // Essayer d'ajouter l'image si disponible
+      if (article.images?.[0] && navigator.canShare) {
+        try {
+          const response = await fetch(article.images[0]);
+          const blob = await response.blob();
+          const file = new File([blob], 'article-image.jpg', { type: blob.type });
+          
+          if (navigator.canShare({ files: [file] })) {
+            shareData.files = [file];
+          }
+        } catch (err) {
+          console.log('Partage avec image non supporté:', err);
+        }
+      }
+
+      await navigator.share(shareData);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Erreur de partage:', err);
+        alert('Une erreur est survenue lors du partage.');
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -199,6 +239,13 @@ const AdminDashboard = () => {
                       >
                         <Edit size={16} className="md:w-[18px] md:h-[18px]" />
                       </Link>
+                      <button
+                        onClick={() => handleShareArticle(article)}
+                        className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors"
+                        title="Partager l'article"
+                      >
+                        <Share2 size={16} className="md:w-[18px] md:h-[18px]" />
+                      </button>
                       <button className="hidden sm:block p-2 hover:bg-neutral-100 rounded-lg text-neutral-400 hover:text-neutral-600">
                         <MoreHorizontal size={18} />
                       </button>

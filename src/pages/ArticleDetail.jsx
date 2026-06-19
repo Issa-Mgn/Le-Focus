@@ -105,11 +105,32 @@ const ArticleDetail = () => {
 
     setSharing(true);
     try {
-      await navigator.share({
+      // Message avec infos de contact
+      const contactInfo = '\n\nWABI MIGAN DG - Le Focus\nMTN: 0196768717\nCELTIIS: 0140496090';
+      
+      const shareData = {
         title: article.title,
-        text: article.excerpt || article.title,
-        url: window.location.href
-      });
+        text: `${article.excerpt || article.title}\n\n${window.location.href}${contactInfo}`,
+      };
+
+      // Essayer d'ajouter l'image directement si possible
+      if (images[0] && navigator.canShare) {
+        try {
+          // Télécharger l'image
+          const response = await fetch(images[0]);
+          const blob = await response.blob();
+          const file = new File([blob], 'article-image.jpg', { type: blob.type });
+          
+          // Vérifier si on peut partager avec fichier
+          if (navigator.canShare({ files: [file] })) {
+            shareData.files = [file];
+          }
+        } catch (err) {
+          console.log('Partage avec image non supporté:', err);
+        }
+      }
+
+      await navigator.share(shareData);
     } catch (err) {
       // Si l'utilisateur annule, on ne fait rien (AbortError)
       if (err.name !== 'AbortError') {
