@@ -17,17 +17,11 @@ const Footer = () => {
       <div className="container-custom py-14 sm:py-16">
         <div className="grid gap-12 md:grid-cols-[1.25fr_1fr_1.15fr_1.2fr]">
           <div>
-            <div className="mb-6 flex items-center gap-3">
-              <img 
-                src={logo} 
-                alt="Le Focus" 
-                className="h-10 w-10 rounded-md object-cover"
-              />
-              <div>
-                <h2 className="font-serif text-[19px] font-black leading-none text-white">Le Focus</h2>
-                <p className="mt-2 font-display text-[9px] uppercase tracking-[0.24em] text-neutral-600">Porto-Novo</p>
-              </div>
-            </div>
+            <img 
+              src={logo} 
+              alt="Le Focus" 
+              className="h-14 w-auto object-contain mb-6"
+            />
 
             <p className="font-serif text-[14px] leading-6 text-neutral-400">
               Journal d'informations et d'enquêtes. L'actualité en profondeur depuis Porto-Novo.

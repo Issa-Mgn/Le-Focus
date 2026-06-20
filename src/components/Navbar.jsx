@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Bookmark, ChevronDown, Home, Info, Mail, Menu, Search, X } from 'lucide-react';
@@ -7,29 +7,19 @@ import { categories } from '../data/mockData';
 import logo from '../assets/logo.jpg';
 
 const navLinks = [
-  { to: '/', label: 'Accueil', icon: Home },
-  { to: '/articles', label: 'Articles', icon: BookOpen },
-  { to: '/contact', label: 'Contact', icon: Mail },
-  { to: '/about', label: 'À propos', icon: Info },
-  { to: '/bookmarks', label: 'Ma Liste', icon: Bookmark },
+  { to: '/', label: 'Accueil', Icon: Home },
+  { to: '/articles', label: 'Articles', Icon: BookOpen },
+  { to: '/contact', label: 'Contact', Icon: Mail },
+  { to: '/about', label: 'À propos', Icon: Info },
+  { to: '/bookmarks', label: 'Ma Liste', Icon: Bookmark },
 ];
 
 const Logo = () => (
-  <div className="flex items-center gap-3">
-    <img 
-      src={logo} 
-      alt="Le Focus" 
-      className="h-10 w-10 rounded-md object-cover md:h-11 md:w-11"
-    />
-    <div>
-      <div className="font-serif text-[20px] font-black leading-none text-neutral-950 md:text-[22px]">
-        Le Focus
-      </div>
-      <div className="mt-1.5 font-display text-[8px] font-medium uppercase tracking-[0.28em] text-neutral-500 md:text-[9px]">
-        Porto-Novo • Journal
-      </div>
-    </div>
-  </div>
+  <img 
+    src={logo} 
+    alt="Le Focus" 
+    className="h-10 w-auto object-contain"
+  />
 );
 
 const Navbar = () => {
@@ -165,7 +155,6 @@ const Navbar = () => {
             <div className="container-custom py-5">
               <div className="divide-y divide-neutral-100">
                 {navLinks.map((link) => {
-                  const Icon = link.icon;
                   const active = location.pathname === link.to;
                   return (
                     <Link
@@ -174,7 +163,7 @@ const Navbar = () => {
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center gap-4 py-4 font-display text-[15px] font-semibold ${active ? 'text-primary-500' : 'text-neutral-700'}`}
                     >
-                      <Icon size={19} strokeWidth={1.7} />
+                      <link.Icon size={22} strokeWidth={1.8} />
                       {link.label}
                     </Link>
                   );
@@ -187,11 +176,6 @@ const Navbar = () => {
               >
                 Commander une insertion
               </Link>
-              {isAuthenticated && (
-                <Link to="/admin/dashboard" onClick={() => setIsOpen(false)} className="mt-4 block text-center text-sm text-neutral-500">
-                  Administration
-                </Link>
-              )}
             </div>
           </motion.nav>
         )}

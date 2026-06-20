@@ -207,12 +207,12 @@ const AdminEditArticle = () => {
     // Validate based on PREVIEWS (what is visible), not just uploaded files
     const activeImagesCount = imagePreviews.filter(img => img !== null).length;
     if (activeImagesCount < 1) {
-       // Relaxed constraint for existing articles, or keep 3? Let's say at least 1 for now or 3 if we want strictness.
-       // The original required 3. Let's keep it consistent.
-       if (activeImagesCount < 3) {
-          showAlert('warning', `Veuillez avoir 3 images pour l'article. (${activeImagesCount}/3 présentes)`);
-          return;
-       }
+       showAlert('warning', 'Veuillez avoir au moins 1 image pour l\'article.');
+       return;
+    }
+    if (activeImagesCount > 3) {
+       showAlert('warning', 'Maximum 3 images autorisées.');
+       return;
     }
 
     setIsPublishing(true);

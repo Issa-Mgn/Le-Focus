@@ -174,8 +174,12 @@ const AdminNewArticle = () => {
     e.preventDefault();
     
     const uploadedCount = imageFiles.filter(img => img !== null).length;
-    if (uploadedCount < 3) {
-      showAlert('warning', `Veuillez télécharger les 3 images requises. (${uploadedCount}/3 téléchargées)`);
+    if (uploadedCount < 1) {
+      showAlert('warning', 'Veuillez télécharger au moins 1 image.');
+      return;
+    }
+    if (uploadedCount > 3) {
+      showAlert('warning', 'Maximum 3 images autorisées.');
       return;
     }
 

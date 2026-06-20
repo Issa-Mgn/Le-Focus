@@ -39,15 +39,14 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       >
       <div className="p-6 border-b border-neutral-800 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded overflow-hidden">
+          <div className="">
             <img src={logo} alt="Le Focus" className="w-full h-full object-cover" />
           </div>
-          <span className="text-xl font-serif font-bold">Le Focus</span>
         </Link>
-        {/* Mobile Close Button */}
+        {/* Mobile Close Button
         <button onClick={onClose} className="md:hidden text-neutral-400 hover:text-white">
           <X size={20} className="rotate-180" />
-        </button>
+        </button> */}
       </div>
       <div className="px-6 py-2">
         <p className="text-xs text-neutral-500 uppercase tracking-widest">Espace Admin</p>
@@ -65,7 +64,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               className={clsx(
                 "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-sm font-medium",
                 isActive 
-                  ? "bg-primary-500-temp text-white shadow-lg shadow-primary-900/20" 
+                  ? "bg-primary-500 text-white shadow-lg shadow-primary-900/20" 
                   : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
               )}
             >

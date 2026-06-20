@@ -7,7 +7,7 @@ const Loader = () => {
         
         {/* Text */}
         <div className="text-center">
-          <h2 className="font-serif text-2xl font-black text-neutral-950">Le Focus</h2>
+          <h2 className="font-serif text-2xl font-bold text-primary-500">Le Focus</h2>
           <p className="mt-2 font-display text-xs uppercase tracking-[0.2em] text-neutral-400">Chargement...</p>
         </div>
       </div>

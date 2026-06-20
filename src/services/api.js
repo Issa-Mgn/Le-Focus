@@ -185,14 +185,10 @@ export const api = {
             const nonEmptyImages = (articleData.images || []).filter(img => img);
 
             if (nonEmptyImages.length > 0) {
-                // Cover Image
-                const coverBlob = base64ToBlob(nonEmptyImages[0]);
-                if (coverBlob) formData.append('cover_image', coverBlob, 'cover.jpg');
-
-                // Gallery Images
-                nonEmptyImages.slice(1).forEach((base64, index) => {
+                // Send all images as gallery_images (backend expects this)
+                nonEmptyImages.forEach((base64, index) => {
                     const blob = base64ToBlob(base64);
-                    if (blob) formData.append('gallery_images', blob, `gallery-${index}.jpg`);
+                    if (blob) formData.append('gallery_images', blob, `image-${index}.jpg`);
                 });
             }
 
@@ -247,29 +243,16 @@ export const api = {
             formData.append('author', articleData.author);
 
             // Handle Images
-            // For updates, we might need to handle existing images vs new images
-            // This implementation assumes we are sending new images or keeping existing ones logic is handled by backend or we overlook it for now.
-            // A common pattern for simple updates is to re-upload if changed, or backend handles "if not provided, keep old".
-            // Adding logic to send strings (URLs) if not changed or Blobs if changed is complex with FormData.
-            // Simplest approach: If it's a base64 string (starts with data:), append it. If it's a URL, maybe backend ignores or we don't send it?
-
-            // NOTE: This assumes the backend can handle partial updates or we send everything.
-            // Let's iterate and see what we have.
+            // For updates: send only NEW images (base64) as gallery_images
+            // Backend will replace all images if new ones are provided
             const nonEmptyImages = (articleData.images || []).filter(img => img);
+            const newImages = nonEmptyImages.filter(img => img.startsWith('data:'));
 
-            if (nonEmptyImages.length > 0) {
-                // Check if cover image is new (base64)
-                if (nonEmptyImages[0] && nonEmptyImages[0].startsWith('data:')) {
-                    const coverBlob = base64ToBlob(nonEmptyImages[0]);
-                    if (coverBlob) formData.append('cover_image', coverBlob, 'cover.jpg');
-                }
-
-                // Gallery Images
-                nonEmptyImages.slice(1).forEach((img, index) => {
-                    if (img && img.startsWith('data:')) {
-                        const blob = base64ToBlob(img);
-                        if (blob) formData.append('gallery_images', blob, `gallery-${index}.jpg`);
-                    }
+            if (newImages.length > 0) {
+                // Send all new images as gallery_images
+                newImages.forEach((base64, index) => {
+                    const blob = base64ToBlob(base64);
+                    if (blob) formData.append('gallery_images', blob, `image-${index}.jpg`);
                 });
             }
 

@@ -37,14 +37,11 @@ const AdminLogin = () => {
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <img 
-              src={logo} 
-              alt="Le Focus" 
-              className="w-12 h-12 rounded-lg object-cover shadow-lg"
-            />
-            <span className="text-3xl font-serif font-bold text-white">Le Focus</span>
-          </div>
+          <img 
+            src={logo} 
+            alt="Le Focus" 
+            className="h-16 w-auto object-contain mx-auto mb-4"
+          />
           <p className="text-neutral-400 text-sm">Espace Administrateur</p>
         </div>
 
@@ -110,7 +107,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-500-temp text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-500-temp/20 flex items-center justify-center gap-2"
+              className="w-full bg-primary-500 text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-500-temp/20 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="animate-spin" size={20} /> : 'Se connecter'}
             </button>

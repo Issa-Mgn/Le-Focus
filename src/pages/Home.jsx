@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { categories } from '../data/mockData';
 import ArticleCard from '../components/ArticleCard';
-import Loader from '../components/Loader';
 import CustomAlert from '../components/CustomAlert';
 
 const fallbackImage = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1600';
@@ -14,6 +13,7 @@ const Home = () => {
   const [alert, setAlert] = useState({ show: false, type: 'success', message: '' });
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -33,7 +33,21 @@ const Home = () => {
 
   const sortedArticles = [...articles].sort((a, b) => new Date(b.date) - new Date(a.date));
   const featuredArticle = sortedArticles[0];
-  const articleCards = sortedArticles.slice(0, 6);
+  // Exclure l'article à la une de la liste des articles affichés
+  const articleCards = sortedArticles.slice(1, 7);
+
+  // Auto-défilement des images toutes les 5 secondes
+  useEffect(() => {
+    if (!featuredArticle?.images || featuredArticle.images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => 
+        prev === featuredArticle.images.length - 1 ? 0 : prev + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [featuredArticle]);
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
@@ -92,45 +106,73 @@ const Home = () => {
       `}</style>
       <CustomAlert show={alert.show} type={alert.type} message={alert.message} onClose={() => setAlert({ ...alert, show: false })} />
 
-      {featuredArticle && (
-        <div className="bg-[#151515] py-3 text-white">
-          <div className="container-custom flex min-w-0 items-center gap-2 font-serif text-[12px]">
-            <span className="font-display text-[11px] font-bold uppercase tracking-[0.12em] text-primary-500">À LA UNE</span>
-            <span className="text-neutral-500">—</span>
-            <span className="truncate text-neutral-300">{featuredArticle.title}</span>
-          </div>
-        </div>
-      )}
-
       <section className="bg-[#151515]">
         {featuredArticle ? (
-          <div className="container-custom px-0 sm:px-6 lg:px-8">
-            <div className="relative h-[410px] overflow-hidden md:h-[450px]">
-              <img
-                src={featuredArticle.images?.[0] || featuredArticle.image || fallbackImage}
-                alt={featuredArticle.title}
-                className="absolute inset-0 h-full w-full object-contain"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 px-5 pb-9 sm:px-8 sm:pb-12">
-                <span className="mb-4 block font-display text-[10px] font-bold uppercase tracking-[0.18em] text-primary-500">
-                  {featuredArticle.category}
-                </span>
-                <h1 className="max-w-3xl font-serif text-[24px] font-black leading-tight text-white sm:text-[34px]">
-                  {featuredArticle.title}
-                </h1>
-                <p className="mt-3 max-w-3xl font-serif text-[14px] leading-6 text-white sm:text-[16px]">
-                  {featuredArticle.excerpt}
-                </p>
-                <Link to={`/article/${featuredArticle.id}`} className="mt-6 inline-block bg-white px-6 py-3 font-display text-sm font-bold text-neutral-950 hover:bg-neutral-100">
-                  Lire la suite
-                </Link>
-              </div>
-              <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
-                <span className="h-1.5 w-8 bg-primary-500" />
-                <span className="h-1.5 w-2 rounded-full bg-white/45" />
+          <div className="relative h-[410px] overflow-hidden md:h-[500px]">
+            {/* Carrousel d'images */}
+            <div 
+              className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+              style={{ 
+                transform: `translateX(-${currentImageIndex * 100}%)`
+              }}
+            >
+              {(featuredArticle.images || [featuredArticle.image || fallbackImage]).map((image, index) => (
+                <div key={index} className="relative h-full w-full flex-shrink-0 bg-neutral-900">
+                  <img
+                    src={image}
+                    alt={`${featuredArticle.title} - ${index + 1}`}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+            
+            {/* Badge À LA UNE */}
+            <div className="absolute top-5 left-5 z-10">
+              <span className="bg-primary-500 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-lg">
+                À LA UNE
+              </span>
+            </div>
+
+            {/* Contenu en bas */}
+            <div className="absolute bottom-0 left-0 right-0 z-10 px-5 pb-5 md:px-8 md:pb-8">
+              <div className="mx-auto max-w-7xl">
+                <div className="max-w-3xl">
+                  <h2 className="font-serif text-2xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
+                    {featuredArticle.title}
+                  </h2>
+                  <p className="mt-3 line-clamp-2 font-serif text-sm text-neutral-200 md:text-lg lg:mt-4">
+                    {featuredArticle.summary}
+                  </p>
+                  <Link
+                    to={`/article/${featuredArticle.id}`}
+                    className="mt-4 inline-block bg-primary-500 px-8 py-3 font-display text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-primary-600 lg:mt-6"
+                  >
+                    Lire
+                  </Link>
+                </div>
               </div>
             </div>
+
+            {/* Indicateurs de pagination */}
+            {featuredArticle.images?.length > 1 && (
+              <div className="absolute bottom-5 right-5 z-10 flex gap-2 md:bottom-8 md:right-8">
+                {featuredArticle.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      index === currentImageIndex 
+                        ? 'w-8 bg-primary-500' 
+                        : 'w-2 bg-white/45 hover:bg-white/70'
+                    }`}
+                    aria-label={`Image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="container-custom py-20 text-center text-neutral-400">Aucun article à la une pour le moment.</div>

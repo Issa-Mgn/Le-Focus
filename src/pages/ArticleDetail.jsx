@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, ArrowRight, Bookmark, Calendar, Download, Share2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Bookmark, Calendar, Download, Share2, Maximize2, X } from 'lucide-react';
 import { api } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
 import Loader from '../components/Loader';
@@ -21,6 +21,8 @@ const ArticleDetail = () => {
   const [downloading, setDownloading] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [bookmarking, setBookmarking] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
   const { isBookmarked, toggleBookmark } = useBookmarks();
 
   useEffect(() => {
@@ -154,6 +156,20 @@ const ArticleDetail = () => {
   const prevImage = () => setCurrentImageIndex((index) => (index - 1 + images.length) % images.length);
   const nextImage = () => setCurrentImageIndex((index) => (index + 1) % images.length);
 
+  const openLightbox = (index) => {
+    setLightboxImageIndex(index);
+    setIsLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    document.body.style.overflow = 'unset';
+  };
+
+  const prevLightboxImage = () => setLightboxImageIndex((index) => (index - 1 + images.length) % images.length);
+  const nextLightboxImage = () => setLightboxImageIndex((index) => (index + 1) % images.length);
+
   return (
     <div className="min-h-screen bg-neutral-50 pb-20">
       {/* Meta tags pour le partage sur les réseaux sociaux */}
@@ -182,6 +198,56 @@ const ArticleDetail = () => {
         <meta property="og:image:alt" content={article.title} />
       </Helmet>
 
+      {/* Modal Lightbox */}
+      {isLightboxOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95">
+          {/* Bouton fermer */}
+          <button
+            onClick={closeLightbox}
+            className="absolute right-4 top-4 z-10 grid h-12 w-12 place-items-center text-white transition-colors hover:bg-white/10"
+            aria-label="Fermer"
+          >
+            <X size={28} />
+          </button>
+
+          {/* Compteur d'images */}
+          {images.length > 1 && (
+            <div className="absolute left-1/2 top-4 z-10 -translate-x-1/2 bg-black/60 px-4 py-2 font-display text-sm font-bold text-white">
+              {lightboxImageIndex + 1} / {images.length}
+            </div>
+          )}
+
+          {/* Image en plein écran */}
+          <div className="relative h-full w-full p-4 sm:p-8">
+            <img
+              src={images[lightboxImageIndex]}
+              alt={`${article.title} ${lightboxImageIndex + 1}`}
+              className="h-full w-full object-contain"
+            />
+          </div>
+
+          {/* Navigation */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevLightboxImage}
+                className="absolute left-4 top-1/2 z-10 grid h-14 w-14 -translate-y-1/2 place-items-center bg-black/60 text-white transition-colors hover:bg-black/80"
+                aria-label="Image précédente"
+              >
+                <ArrowLeft size={28} />
+              </button>
+              <button
+                onClick={nextLightboxImage}
+                className="absolute right-4 top-1/2 z-10 grid h-14 w-14 -translate-y-1/2 place-items-center bg-black/60 text-white transition-colors hover:bg-black/80"
+                aria-label="Image suivante"
+              >
+                <ArrowRight size={28} />
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
       <section className="relative h-[420px] overflow-hidden bg-black sm:h-[470px]">
         <div className="flex h-full transition-transform duration-500" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
           {images.map((image, index) => (
@@ -198,10 +264,29 @@ const ArticleDetail = () => {
             <button onClick={nextImage} className="absolute right-4 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center bg-black/55 text-white" aria-label="Image suivante">
               <ArrowRight size={24} />
             </button>
-            <div className="absolute right-5 top-5 bg-black/55 px-3 py-2 font-display text-sm font-bold text-white">
-              {currentImageIndex + 1}/{images.length}
+            <div className="absolute right-5 top-5 flex items-center gap-2">
+              <div className="bg-black/55 px-3 py-2 font-display text-sm font-bold text-white">
+                {currentImageIndex + 1}/{images.length}
+              </div>
+              <button
+                onClick={() => openLightbox(currentImageIndex)}
+                className="grid h-9 w-9 place-items-center bg-black/55 text-white transition-colors hover:bg-black/80"
+                aria-label="Agrandir l'image"
+              >
+                <Maximize2 size={18} />
+              </button>
             </div>
           </>
+        )}
+
+        {images.length === 1 && (
+          <button
+            onClick={() => openLightbox(0)}
+            className="absolute right-5 top-5 grid h-9 w-9 place-items-center bg-black/55 text-white transition-colors hover:bg-black/80"
+            aria-label="Agrandir l'image"
+          >
+            <Maximize2 size={18} />
+          </button>
         )}
 
         <div className="absolute inset-x-0 bottom-0">
