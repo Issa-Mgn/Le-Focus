@@ -1,0 +1,16 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Redirect sitemap.xml to backend
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "https://le-focus-backend.onrender.com/sitemap.xml"
+  status = 200
+  force = true
+
+# SPA fallback - must be last
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
