@@ -2,10 +2,20 @@
   publish = "dist"
   command = "npm run build"
 
-# Redirect sitemap.xml to backend
+[functions]
+  directory = "netlify/functions"
+
+# OPTION A: Redirect direct (301) - Simple mais change l'URL
+# [[redirects]]
+#   from = "/sitemap.xml"
+#   to = "https://le-focus-backend.onrender.com/sitemap.xml"
+#   status = 301
+#   force = true
+
+# OPTION B: Proxy via Netlify Function (RECOMMANDÉ)
 [[redirects]]
   from = "/sitemap.xml"
-  to = "https://le-focus-backend.onrender.com/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
   status = 200
   force = true
 
