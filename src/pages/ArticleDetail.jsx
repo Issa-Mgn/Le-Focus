@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, ArrowRight, Bookmark, Calendar, Download, Share2, Maximize2, X } from 'lucide-react';
 import { api } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
@@ -55,7 +54,7 @@ const ArticleDetail = () => {
     return (
       <div className="container-custom py-24 text-center">
         <h1 className="font-serif text-[26px] font-black">Article non trouvé</h1>
-        <Link to="/" className="mt-5 inline-block text-primary-500-temp">Retour à l'accueil</Link>
+        <Link to="/" className="mt-5 inline-block text-primary-600">Retour à l'accueil</Link>
       </div>
     );
   }
@@ -173,7 +172,7 @@ const ArticleDetail = () => {
   return (
     <div className="min-h-screen bg-neutral-50 pb-20">
       {/* Meta tags pour le partage sur les réseaux sociaux */}
-      <Helmet>
+      <>
         <title>{article.title} - Le Focus</title>
         <meta name="description" content={article.excerpt || article.title} />
         
@@ -196,7 +195,7 @@ const ArticleDetail = () => {
         
         {/* WhatsApp */}
         <meta property="og:image:alt" content={article.title} />
-      </Helmet>
+      </>
 
       {/* Modal Lightbox */}
       {isLightboxOpen && (
@@ -307,13 +306,13 @@ const ArticleDetail = () => {
       </section>
 
       <main className="container-custom relative -mt-8 max-w-4xl">
-        <article className="bg-white px-5 py-8 sm:px-10 sm:py-10">
+        <article className="border border-neutral-200 bg-white px-5 py-8 sm:px-10 sm:py-10">
           <div className="mb-9 flex items-center justify-between gap-4">
             <div className="flex gap-3">
               <button 
                 onClick={handleDownload} 
                 disabled={downloading}
-                className="inline-flex items-center gap-2 bg-neutral-50 px-4 py-3 font-display text-sm text-neutral-700 disabled:opacity-60"
+                className="inline-flex items-center gap-2 border border-neutral-200 bg-white px-4 py-3 font-display text-sm font-medium text-neutral-700 transition-colors duration-150 hover:border-neutral-900 disabled:opacity-60"
               >
                 {downloading ? <SpinnerSmall size={16} /> : <Download size={16} />}
                 PDF
@@ -321,7 +320,7 @@ const ArticleDetail = () => {
               <button 
                 onClick={handleBookmark} 
                 disabled={bookmarking}
-                className="inline-flex items-center gap-2 bg-neutral-50 px-4 py-3 font-display text-sm text-neutral-700 disabled:opacity-60"
+                className="inline-flex items-center gap-2 border border-neutral-200 bg-white px-4 py-3 font-display text-sm font-medium text-neutral-700 transition-colors duration-150 hover:border-neutral-900 disabled:opacity-60"
               >
                 {bookmarking ? (
                   <SpinnerSmall size={16} />
@@ -334,7 +333,7 @@ const ArticleDetail = () => {
             <button 
               onClick={handleShare} 
               disabled={sharing}
-              className="p-3 text-neutral-500 hover:text-primary-500-temp disabled:opacity-60" 
+              className="p-3 text-neutral-500 hover:text-primary-600 disabled:opacity-60" 
               aria-label="Partager"
             >
               {sharing ? <SpinnerSmall size={21} /> : <Share2 size={21} />}

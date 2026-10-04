@@ -15,7 +15,9 @@ export const useTextToSpeech = () => {
 
         // Cleanup on unmount
         return () => {
-            cancel();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
         };
     }, []);
 

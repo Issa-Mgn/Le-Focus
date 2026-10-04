@@ -46,7 +46,7 @@ const About = () => {
           <div className="mt-12">
             <h2 className="font-serif text-[24px] font-black text-neutral-950">Nous contacter</h2>
             <p className="mt-3 font-serif text-[16px] text-neutral-600">Une question ? Écrivez-nous.</p>
-            <Link to="/contact" className="mt-6 inline-block bg-[#E60000] px-7 py-4 font-display text-sm font-bold text-white hover:bg-primary-500-temp">
+            <Link to="/contact" className="btn-primary mt-6">
               Page Contact
             </Link>
           </div>

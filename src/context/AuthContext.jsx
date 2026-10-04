@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- ce fichier expose volontairement le contexte, le provider et le hook useAuth */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
 
@@ -13,7 +14,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [, setUser] = useState(null);
 
   useEffect(() => {
     // Check if user is already authenticated via token

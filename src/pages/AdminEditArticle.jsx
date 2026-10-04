@@ -141,7 +141,7 @@ const AdminEditArticle = () => {
         if (successCount > 0) {
           showAlert('success', `${successCount} image(s) ajoutée(s) avec succès`);
         }
-      } catch (error) {
+      } catch {
         showAlert('error', "Erreur lors du téléchargement des images");
       } finally {
         const finalUploadingImages = [...uploadingImages];
@@ -233,18 +233,18 @@ const AdminEditArticle = () => {
         pdf: pdfFile,
       };
 
-      console.log('📝 Mise à jour article (Envoi API)...', articleData);
+      console.log('Mise à jour article (Envoi API)...', articleData);
 
       await api.articles.update(id, articleData);
       
-      console.log('✅ Article mis à jour avec succès!');
-      showAlert('success', '✅ Article mis à jour avec succès !');
+      console.log('Article mis à jour avec succès!');
+      showAlert('success', 'Article mis à jour avec succès !');
 
       setTimeout(() => {
         navigate('/admin/dashboard');
       }, 1500);
     } catch (error) {
-      console.error('❌ Erreur de mise à jour:', error);
+      console.error('Erreur de mise à jour:', error);
       showAlert('error', error.message || 'Erreur lors de la mise à jour');
       setIsPublishing(false);
     }
@@ -300,7 +300,7 @@ const AdminEditArticle = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <Type size={18} />
               <span>Informations Principales</span>
             </div>
@@ -338,14 +338,14 @@ const AdminEditArticle = () => {
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+              <div className="flex items-center gap-3 text-primary-600 font-bold uppercase tracking-wider text-sm">
                 <FileText size={18} />
                 <span>Contenu de l'article ({paragraphs.length} paragraphe{paragraphs.length > 1 ? 's' : ''})</span>
               </div>
               <motion.button
                 type="button"
                 onClick={addParagraph}
-                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-500-temp transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -358,7 +358,7 @@ const AdminEditArticle = () => {
               {paragraphs.map((paragraph, index) => (
                 <div key={index} className="relative group">
                   <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-500-temp rounded-full flex items-center justify-center font-bold text-sm mt-2">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold text-sm mt-2">
                       {index + 1}
                     </div>
                     <textarea 
@@ -394,7 +394,7 @@ const AdminEditArticle = () => {
             transition={{ delay: 0.2 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <Layout size={18} />
               <span>Métadonnées</span>
             </div>
@@ -433,7 +433,7 @@ const AdminEditArticle = () => {
             transition={{ delay: 0.3 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <ImageIcon size={18} />
               <span>Médias</span>
             </div>

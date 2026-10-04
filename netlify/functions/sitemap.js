@@ -1,5 +1,5 @@
 // Netlify Function to proxy sitemap.xml from backend
-exports.handler = async (event, context) => {
+exports.handler = async (_event, _context) => {
     try {
         const response = await fetch('https://le-focus-backend.onrender.com/sitemap.xml');
         

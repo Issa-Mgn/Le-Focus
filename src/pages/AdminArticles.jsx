@@ -73,7 +73,7 @@ const AdminArticles = () => {
         </div>
         <Link 
           to="/admin/new-article"
-          className="bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-500-temp transition-colors flex items-center gap-2"
+          className="bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors flex items-center gap-2"
         >
           <FileText size={20} />
           Nouvel Article
@@ -148,7 +148,7 @@ const AdminArticles = () => {
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-500-temp">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-600">
                       {article.category}
                     </span>
                   </td>

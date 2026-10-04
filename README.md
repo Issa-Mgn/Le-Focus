@@ -48,7 +48,7 @@ Site web moderne de presse et d'actualités basé à Porto-Novo, Bénin. Interfa
 - **Recharts 3.5.1** - Graphiques interactifs
 
 ### Utilitaires
-- **React Helmet Async 2.0.5** - Meta tags dynamiques
+- **Meta tags natifs** - Gestion native de <title> et <meta> (React 19)
 - **clsx & tailwind-merge** - Gestion des classes CSS
 
 ## 📦 Installation

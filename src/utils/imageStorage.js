@@ -30,7 +30,7 @@ export const convertImageToBase64 = (file, maxWidth = 800, quality = 0.5) => {
                 // Convert to base64 with compression (JPEG for smaller size)
                 const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
 
-                console.log(`📸 Image compressée: ${(file.size / 1024).toFixed(2)}KB → ${(compressedBase64.length / 1024).toFixed(2)}KB`);
+                console.log(`Image compressée: ${(file.size / 1024).toFixed(2)}KB → ${(compressedBase64.length / 1024).toFixed(2)}KB`);
 
                 resolve(compressedBase64);
             };
@@ -62,7 +62,7 @@ export const convertPdfToBase64 = (file, maxSizeMB = 20) => {
                 // In a real app, we would use a library like pdf-lib or a server to compress
                 // Here we just return the file, but the UI will show compression
             }
-            console.log(`📄 PDF converti: ${fileSizeMB.toFixed(2)}MB`);
+            console.log(`PDF converti: ${fileSizeMB.toFixed(2)}MB`);
             resolve(reader.result);
         };
         reader.onerror = reject;
@@ -79,7 +79,7 @@ export const compressPdf = async (file) => {
         const processingTime = Math.min(originalSize * 500, 3000);
 
         setTimeout(() => {
-            console.log(`✅ PDF compressé de ${originalSize.toFixed(2)}MB à 1.00MB (Simulé)`);
+            console.log(`PDF compressé de ${originalSize.toFixed(2)}MB à 1.00MB (Simulé)`);
             resolve({
                 compressed: true,
                 originalSize: originalSize,
@@ -97,7 +97,7 @@ export const checkStorageSpace = () => {
         let usedSpace = 0;
 
         for (let key in localStorage) {
-            if (localStorage.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
                 usedSpace += localStorage[key].length + key.length;
             }
         }
@@ -105,7 +105,7 @@ export const checkStorageSpace = () => {
         const availableSpace = totalSpace - usedSpace;
         const usedPercentage = ((usedSpace / totalSpace) * 100).toFixed(2);
 
-        console.log(`💾 LocalStorage: ${(usedSpace / 1024).toFixed(2)}KB utilisés (${usedPercentage}%)`);
+        console.log(`LocalStorage: ${(usedSpace / 1024).toFixed(2)}KB utilisés (${usedPercentage}%)`);
 
         return {
             total: totalSpace,
@@ -113,7 +113,7 @@ export const checkStorageSpace = () => {
             available: availableSpace,
             percentage: parseFloat(usedPercentage)
         };
-    } catch (e) {
+    } catch {
         return null;
     }
 };

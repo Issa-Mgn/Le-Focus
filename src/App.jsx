@@ -105,7 +105,7 @@ function AppRoutes() {
       />
       
       {/* Fallback - 404 Page */}
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<MainRoute><NotFound /></MainRoute>} />
     </Routes>
   );
 }

@@ -27,7 +27,7 @@ const safeDate = (dateStr) => {
             return dateStr;
         }
         return new Date(dateStr).toISOString().split('T')[0];
-    } catch (e) {
+    } catch {
         console.warn("Invalid date:", dateStr);
         return new Date().toISOString().split('T')[0];
     }

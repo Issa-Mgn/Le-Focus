@@ -106,7 +106,7 @@ const AdminNewArticle = () => {
         if (successCount > 0) {
           showAlert('success', `${successCount} image(s) ajoutée(s) avec succès`);
         }
-      } catch (error) {
+      } catch {
         showAlert('error', "Erreur lors du téléchargement des images");
       } finally {
         // Reset loading state
@@ -199,14 +199,14 @@ const AdminNewArticle = () => {
         // date is handled by backend
       };
 
-      console.log('📝 Article à publier (Envoi API)...');
+      console.log('Article à publier (Envoi API)...');
 
       // Send to API
       const savedArticle = await api.articles.create(articleData);
       
-      console.log('✅ Article publié avec succès!', savedArticle);
+      console.log('Article publié avec succès!', savedArticle);
       
-      showAlert('success', '✅ Article publié avec succès !');
+      showAlert('success', 'Article publié avec succès !');
 
       // Reset form
       setTimeout(() => {
@@ -225,11 +225,11 @@ const AdminNewArticle = () => {
         }, 1000);
       }, 1500);
     } catch (error) {
-      console.error('❌ Erreur de publication:', error);
+      console.error('Erreur de publication:', error);
       
-      let errorMessage = '❌ Erreur lors de la publication';
+      let errorMessage = 'Erreur lors de la publication';
       if (error.message) {
-        errorMessage = `❌ ${error.message}`;
+        errorMessage = `${error.message}`;
       }
       
       showAlert('error', errorMessage);
@@ -273,7 +273,7 @@ const AdminNewArticle = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <Type size={18} />
               <span>Informations Principales</span>
             </div>
@@ -313,14 +313,14 @@ const AdminNewArticle = () => {
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-8 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+              <div className="flex items-center gap-3 text-primary-600 font-bold uppercase tracking-wider text-sm">
                 <FileText size={18} />
                 <span>Contenu de l'article ({paragraphs.length} paragraphe{paragraphs.length > 1 ? 's' : ''})</span>
               </div>
               <motion.button
                 type="button"
                 onClick={addParagraph}
-                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-500-temp transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -333,7 +333,7 @@ const AdminNewArticle = () => {
               {paragraphs.map((paragraph, index) => (
                 <div key={index} className="relative group">
                   <div className="flex items-start gap-2">
-                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-500-temp rounded-full flex items-center justify-center font-bold text-sm mt-2">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold text-sm mt-2">
                       {index + 1}
                     </div>
                     <textarea 
@@ -364,7 +364,7 @@ const AdminNewArticle = () => {
 
             {paragraphs.length < 10 && (
               <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-700">
-                💡 <strong>Astuce:</strong> Structurez votre article en plusieurs paragraphes pour une meilleure lisibilité.
+                <strong>Astuce:</strong> Structurez votre article en plusieurs paragraphes pour une meilleure lisibilité.
               </div>
             )}
           </motion.div>
@@ -379,7 +379,7 @@ const AdminNewArticle = () => {
             transition={{ delay: 0.2 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <Layout size={18} />
               <span>Métadonnées</span>
             </div>
@@ -408,7 +408,7 @@ const AdminNewArticle = () => {
               <div>
                 <label className="block text-sm font-bold text-neutral-700 mb-2">Auteur</label>
                 <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-500-temp font-bold text-xs">
+                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-xs">
                     WM
                   </div>
                   <span className="font-medium text-neutral-700">{author}</span>
@@ -424,7 +424,7 @@ const AdminNewArticle = () => {
             transition={{ delay: 0.3 }}
             className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center gap-3 mb-6 text-primary-500-temp font-bold uppercase tracking-wider text-sm">
+            <div className="flex items-center gap-3 mb-6 text-primary-600 font-bold uppercase tracking-wider text-sm">
               <ImageIcon size={18} />
               <span>Médias</span>
             </div>
@@ -588,7 +588,7 @@ const AdminNewArticle = () => {
                 {/* Category Badge */}
                 {category && (
                   <div className="mb-4">
-                    <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-500-temp rounded-full text-sm font-bold">
+                    <span className="inline-block px-4 py-1.5 bg-primary-100 text-primary-600 rounded-full text-sm font-bold">
                       {category}
                     </span>
                   </div>

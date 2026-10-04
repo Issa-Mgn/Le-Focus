@@ -26,7 +26,7 @@ const Bookmarks = () => {
         <section className="grid min-h-[55vh] place-items-center px-5 text-center">
           <div>
             <p className="font-serif text-[20px] text-neutral-500">Aucun article sauvegardé.</p>
-            <Link to="/articles" className="mt-8 inline-block font-serif text-[16px] text-primary-800 hover:text-primary-900">
+            <Link to="/articles" className="mt-8 inline-block font-serif text-[16px] text-neutral-700 underline decoration-neutral-300 underline-offset-4 hover:text-primary-600">
               Voir les articles
             </Link>
           </div>

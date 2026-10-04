@@ -27,7 +27,7 @@ const CommentItem = ({ comment, onLike, onReply }) => {
   return (
     <div className="mb-7">
       <div className="flex gap-4">
-        <div className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full bg-primary-50 font-display font-bold text-primary-500-temp">
+        <div className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full bg-primary-50 font-display font-bold text-primary-600">
           {(comment.author || 'A').charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
@@ -36,11 +36,11 @@ const CommentItem = ({ comment, onLike, onReply }) => {
           <p className="mt-3 font-serif text-[15px] leading-7 text-neutral-700">{comment.content}</p>
 
           <div className="mt-3 flex items-center gap-5 font-display text-sm text-neutral-500">
-            <button onClick={() => onLike(comment.id)} className="inline-flex items-center gap-2 hover:text-primary-500-temp">
+            <button onClick={() => onLike(comment.id)} className="inline-flex items-center gap-2 hover:text-primary-600">
               <ThumbsUp size={15} />
               {comment.likes || 0}
             </button>
-            <button onClick={() => setShowReplyForm((value) => !value)} className="inline-flex items-center gap-2 hover:text-primary-500-temp">
+            <button onClick={() => setShowReplyForm((value) => !value)} className="inline-flex items-center gap-2 hover:text-primary-600">
               <Reply size={15} />
               Répondre
             </button>
@@ -50,7 +50,7 @@ const CommentItem = ({ comment, onLike, onReply }) => {
             <form onSubmit={handleSubmitReply} className="mt-4 space-y-3 border-l border-neutral-200 pl-4">
               <input value={replyEmail} onChange={(e) => setReplyEmail(e.target.value)} type="email" placeholder="Votre email" className="focus-input py-3 text-sm" required />
               <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Votre réponse..." className="focus-input resize-none py-3 text-sm" rows={2} required />
-              <button disabled={isSubmitting} className="inline-flex items-center gap-2 font-display text-sm font-semibold text-primary-500-temp">
+              <button disabled={isSubmitting} className="inline-flex items-center gap-2 font-display text-sm font-semibold text-primary-600">
                 {isSubmitting ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
                 Publier
               </button>
@@ -60,7 +60,7 @@ const CommentItem = ({ comment, onLike, onReply }) => {
           {comment.replies?.length > 0 && (
             <div className="mt-5 space-y-3 border-l border-neutral-200 pl-5">
               {comment.replies.map((reply) => (
-                <div key={reply.id} className="bg-white p-4 shadow-sm">
+                <div key={reply.id} className="border border-neutral-200 bg-white p-4">
                   <div className="font-display text-sm font-bold text-neutral-800">{reply.author || 'Anonyme'}</div>
                   <div className="font-display text-xs text-neutral-400">{formatDate(reply.date || reply.created_at)}</div>
                   <p className="mt-2 font-serif text-[14px] text-neutral-700">{reply.content}</p>
@@ -145,9 +145,9 @@ const CommentsSection = ({ articleId }) => {
         Commentaires ({comments.length})
       </h2>
 
-      <form onSubmit={handleAddComment} className="mb-12 bg-white p-6 shadow-sm">
+      <form onSubmit={handleAddComment} className="mb-12 border border-neutral-200 bg-white p-6">
         <h3 className="mb-5 flex items-center gap-3 font-serif text-[18px] font-black text-neutral-950">
-          <MessageSquare size={20} className="text-primary-500-temp" />
+          <MessageSquare size={20} className="text-primary-600" />
           Laisser un commentaire
         </h3>
         <div className="space-y-5">
@@ -168,7 +168,7 @@ const CommentsSection = ({ articleId }) => {
             required
           />
           <div className="flex justify-end">
-            <button disabled={isSubmitting} className="inline-flex items-center gap-3 px-2 py-3 font-display text-sm font-semibold text-neutral-800 hover:text-primary-500-temp">
+            <button disabled={isSubmitting} className="inline-flex items-center gap-3 px-2 py-3 font-display text-sm font-semibold text-neutral-800 hover:text-primary-600">
               {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={19} />}
               Publier
             </button>
@@ -178,7 +178,7 @@ const CommentsSection = ({ articleId }) => {
 
       {loading ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="animate-spin text-primary-500-temp" size={32} />
+          <Loader2 className="animate-spin text-primary-600" size={32} />
         </div>
       ) : (
         <div>

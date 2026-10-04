@@ -60,7 +60,7 @@ const SearchResults = () => {
               <div>
                 <SearchIcon className="mx-auto mb-5 text-neutral-300" size={46} />
                 <p className="font-serif text-[20px] text-neutral-600">Aucun résultat trouvé</p>
-                <Link to="/articles" className="mt-6 inline-block font-serif text-[16px] text-primary-800">Voir les articles</Link>
+                <Link to="/articles" className="mt-6 inline-block font-serif text-[16px] text-neutral-700 underline decoration-neutral-300 underline-offset-4 hover:text-primary-600">Voir les articles</Link>
               </div>
             </div>
           )}

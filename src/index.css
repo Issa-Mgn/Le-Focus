@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,12 +5,14 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-white text-neutral-900 antialiased;
-    font-family: 'Open Sans', Arial, sans-serif;
-    font-size: 14px;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
   }
 
   h1,
@@ -21,34 +21,40 @@
   h4,
   h5,
   h6 {
-    @apply tracking-normal;
-    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-neutral-950;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  }
+
+  ::selection {
+    background-color: #e4484c;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #e4484c;
+    outline-offset: 2px;
   }
 }
 
 @layer components {
   .container-custom {
-    @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
   }
 
   .btn-primary {
-    @apply relative bg-primary-500 text-white px-7 py-3 font-bold hover:bg-primary-500 transition-colors duration-200 overflow-hidden;
+    @apply inline-flex items-center justify-center gap-2 bg-primary-500 px-7 py-3.5 font-display text-[13px] font-semibold uppercase tracking-[0.06em] text-white transition-colors duration-150 hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-secondary {
-    @apply bg-white text-neutral-900 border border-neutral-200 px-8 py-3.5 font-bold hover:bg-neutral-50 transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2 border border-neutral-300 bg-white px-7 py-3.5 font-display text-[13px] font-semibold uppercase tracking-[0.06em] text-neutral-900 transition-colors duration-150 hover:border-neutral-900 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
-  .card-hover {
-    @apply transition-colors duration-200;
+  .card {
+    @apply border border-neutral-200 bg-white;
   }
 
-  .glass-effect {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl;
-  }
-
-  .gradient-text {
-    @apply text-primary-500;
+  .field-label {
+    @apply mb-2.5 block font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500;
   }
 }
 
@@ -58,26 +64,25 @@
   }
 
   .editorial-kicker {
-    @apply text-primary-500 font-bold uppercase;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.64rem;
-    letter-spacing: 0.22em;
+    @apply font-display font-bold uppercase text-primary-500;
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
   }
 
   .page-hero {
-    @apply bg-white border-b border-neutral-200;
+    @apply border-b border-neutral-200 bg-white;
   }
 
   .page-hero-inner {
-    @apply container-custom py-9 sm:py-11;
+    @apply container-custom py-10 sm:py-12;
   }
 
   .page-title {
-    @apply mt-3 text-[30px] sm:text-[38px] font-black leading-tight text-neutral-950;
+    @apply mt-3 text-[30px] font-black leading-[1.08] text-neutral-950 sm:text-[40px];
   }
 
   .focus-input {
-    @apply w-full border border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors focus:border-primary-500;
+    @apply w-full border border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors duration-150 placeholder:text-neutral-400 focus:border-neutral-900;
     border-radius: 0;
   }
 }

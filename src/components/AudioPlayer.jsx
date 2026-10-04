@@ -19,9 +19,9 @@ const AudioPlayer = ({ text, title }) => {
   };
 
   return (
-    <div className="mb-8 flex items-center justify-between bg-neutral-50 p-4 shadow-sm">
+    <div className="mb-8 flex items-center justify-between border border-neutral-200 bg-white p-4">
       <div className="flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-full bg-primary-50 text-primary-500-temp">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-primary-50 text-primary-600">
           <Volume2 size={20} />
         </div>
         <div>
@@ -36,7 +36,7 @@ const AudioPlayer = ({ text, title }) => {
             <SpinnerSmall size={16} color="#ffffff" />
           </button>
         ) : !isSpeaking && !isPaused ? (
-          <button onClick={handlePlay} className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-500-temp" title="Lire">
+          <button onClick={handlePlay} className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-600" title="Lire">
             <Play size={16} fill="currentColor" />
           </button>
         ) : (
@@ -46,7 +46,7 @@ const AudioPlayer = ({ text, title }) => {
                 <Pause size={16} fill="currentColor" />
               </button>
             ) : (
-              <button onClick={resume} className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-500-temp" title="Reprendre">
+              <button onClick={resume} className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-600" title="Reprendre">
                 <Play size={16} fill="currentColor" />
               </button>
             )}

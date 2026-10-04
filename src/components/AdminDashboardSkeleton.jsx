@@ -32,8 +32,8 @@ const AdminDashboardSkeleton = () => {
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100">
                     <Skeleton className="h-6 w-48 mb-6" />
                     <div className="h-80 flex items-end justify-between gap-2">
-                        {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                            <Skeleton key={i} className={`w-full rounded-t-sm h-[${Math.floor(Math.random() * 80) + 10}%]`} />
+                        {['h-[40%]', 'h-[65%]', 'h-[30%]', 'h-[80%]', 'h-[55%]', 'h-[70%]', 'h-[45%]'].map((heightClass, i) => (
+                            <Skeleton key={i} className={`w-full rounded-t-sm ${heightClass}`} />
                         ))}
                     </div>
                 </div>

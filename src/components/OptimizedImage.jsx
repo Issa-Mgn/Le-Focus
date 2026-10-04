@@ -8,7 +8,6 @@ const OptimizedImage = ({
   src, 
   alt, 
   className = '', 
-  placeholder = 'blur',
   onLoad,
   onError,
   ...props 

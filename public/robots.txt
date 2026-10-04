@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lefocusinfos.netlify.app/sitemap.xml
+Sitemap: https://le-focus-backend.onrender.com/sitemap.xml

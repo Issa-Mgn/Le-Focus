@@ -17,27 +17,26 @@ export const usePerformanceMonitor = () => {
         const cacheHit = localStorage.getItem('focus_articles_cache') !== null;
 
         // Observer les performances
-        if (window.performance && window.performance.getEntriesByType) {
-            const resources = performance.getEntriesByType('resource');
+        const resources = window.performance && window.performance.getEntriesByType
+            ? performance.getEntriesByType('resource')
+            : [];
+        const images = resources.filter(r => r.initiatorType === 'img');
+        const totalSize = resources.reduce((acc, r) => acc + (r.transferSize || 0), 0);
 
-            const images = resources.filter(r => r.initiatorType === 'img');
-            const totalSize = resources.reduce((acc, r) => acc + (r.transferSize || 0), 0);
-
-            setMetrics({
-                loadTime: Math.round(loadTime),
-                imageCount: images.length,
-                cacheHit,
-                totalSize: Math.round(totalSize / 1024) // En KB
-            });
-        }
+        setMetrics({
+            loadTime: Math.round(loadTime),
+            imageCount: images.length,
+            cacheHit,
+            totalSize: Math.round(totalSize / 1024) // En KB
+        });
 
         // Log dans la console pour le développement
         if (process.env.NODE_ENV === 'development') {
-            console.log('📊 Performance Metrics:', {
-                '⏱️ Load Time': `${Math.round(loadTime)}ms`,
-                '🖼️ Images Loaded': images?.length || 0,
-                '💾 Cache Hit': cacheHit ? '✅ Yes' : '❌ No',
-                '📦 Total Size': `${Math.round((totalSize || 0) / 1024)}KB`
+            console.log('Performance Metrics:', {
+                'Load Time': `${Math.round(loadTime)}ms`,
+                'Images Loaded': images.length,
+                'Cache Hit': cacheHit ? 'Yes' : 'No',
+                'Total Size': `${Math.round(totalSize / 1024)}KB`
             });
         }
     }, []);
@@ -51,16 +50,16 @@ export const logPerformanceStats = () => {
         const navigation = performance.getEntriesByType('navigation')[0];
         const resources = performance.getEntriesByType('resource');
 
-        console.group('🚀 Performance Statistics');
-        console.log('⏱️ DOM Content Loaded:', Math.round(navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart) + 'ms');
-        console.log('🎨 Page Load Complete:', Math.round(navigation.loadEventEnd - navigation.loadEventStart) + 'ms');
-        console.log('📦 Total Resources:', resources.length);
-        console.log('🖼️ Images:', resources.filter(r => r.initiatorType === 'img').length);
-        console.log('📜 Scripts:', resources.filter(r => r.initiatorType === 'script').length);
-        console.log('🎨 Stylesheets:', resources.filter(r => r.initiatorType === 'link').length);
+        console.group('Performance Statistics');
+        console.log('⏱DOM Content Loaded:', Math.round(navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart) + 'ms');
+        console.log('Page Load Complete:', Math.round(navigation.loadEventEnd - navigation.loadEventStart) + 'ms');
+        console.log('Total Resources:', resources.length);
+        console.log('Images:', resources.filter(r => r.initiatorType === 'img').length);
+        console.log('Scripts:', resources.filter(r => r.initiatorType === 'script').length);
+        console.log('Stylesheets:', resources.filter(r => r.initiatorType === 'link').length);
 
         const totalSize = resources.reduce((acc, r) => acc + (r.transferSize || 0), 0);
-        console.log('💾 Total Transfer Size:', Math.round(totalSize / 1024) + 'KB');
+        console.log('Total Transfer Size:', Math.round(totalSize / 1024) + 'KB');
         console.groupEnd();
     }
 };

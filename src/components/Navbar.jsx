@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Bookmark, ChevronDown, Home, Info, Mail, Menu, Search, X } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import { categories } from '../data/mockData';
 import logo from '../assets/logo.jpg';
 
@@ -28,7 +27,6 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
 
   if (location.pathname.startsWith('/admin')) return null;
 
@@ -55,7 +53,7 @@ const Navbar = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`font-display text-[13px] font-medium transition hover:text-primary-500 ${active ? 'text-primary-500' : 'text-neutral-700'}`}
+                className={`font-display text-[13px] font-medium transition-colors duration-150 hover:text-primary-600 ${active ? 'text-primary-500' : 'text-neutral-700'}`}
               >
                 {link.label}
               </Link>
@@ -65,16 +63,16 @@ const Navbar = () => {
           <div className="group relative">
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 font-display text-[13px] font-medium text-neutral-700 transition hover:text-primary-500"
+              className="inline-flex items-center gap-1.5 font-display text-[13px] font-medium text-neutral-700 transition-colors duration-150 hover:text-primary-600"
             >
               Rubriques <ChevronDown size={15} strokeWidth={1.8} />
             </button>
-            <div className="invisible absolute left-1/2 top-full grid w-[300px] -translate-x-1/2 translate-y-3 grid-cols-2 gap-x-6 gap-y-4 border border-neutral-200 bg-white p-6 opacity-0 shadow-xl transition group-hover:visible group-hover:translate-y-2 group-hover:opacity-100">
+            <div className="invisible absolute left-1/2 top-full grid w-[300px] -translate-x-1/2 translate-y-3 grid-cols-2 gap-x-6 gap-y-4 border border-neutral-200 bg-white p-6 opacity-0 shadow-lg transition group-hover:visible group-hover:translate-y-2 group-hover:opacity-100">
               {categories.map((category) => (
                 <Link
                   key={category}
                   to={`/category/${category.toLowerCase()}`}
-                  className="font-display text-[13px] text-neutral-600 transition hover:text-primary-500"
+                  className="font-display text-[13px] text-neutral-600 transition-colors duration-150 hover:text-primary-600"
                 >
                   {category}
                 </Link>
@@ -90,7 +88,7 @@ const Navbar = () => {
               setShowSearch((value) => !value);
               setIsOpen(false);
             }}
-            className="grid h-10 w-10 place-items-center text-neutral-700 transition hover:text-primary-500"
+            className="grid h-10 w-10 place-items-center text-neutral-700 transition-colors duration-150 hover:text-primary-600"
             aria-label={showSearch ? 'Fermer la recherche' : 'Rechercher'}
           >
             {showSearch ? <X size={22} strokeWidth={2} /> : <Search size={22} strokeWidth={2} />}
@@ -98,7 +96,7 @@ const Navbar = () => {
 
           <Link
             to="/order-insertion"
-            className="hidden bg-primary-500 px-5 py-3 font-display text-[12px] font-bold text-white transition hover:bg-primary-500-temp md:inline-block"
+            className="hidden bg-primary-500 px-5 py-3 font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition-colors duration-150 hover:bg-primary-600 md:inline-block"
           >
             Commander
           </Link>
@@ -109,7 +107,7 @@ const Navbar = () => {
               setIsOpen((value) => !value);
               setShowSearch(false);
             }}
-            className="grid h-10 w-10 place-items-center text-neutral-900 transition hover:text-primary-500 md:hidden"
+            className="grid h-10 w-10 place-items-center text-neutral-900 transition-colors duration-150 hover:text-primary-600 md:hidden"
             aria-label={isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
           >
             {isOpen ? <X size={27} strokeWidth={2} /> : <Menu size={27} strokeWidth={2} />}
@@ -133,7 +131,7 @@ const Navbar = () => {
                 placeholder="Rechercher un article..."
                 className="focus-input h-12 flex-1 text-sm"
               />
-              <button type="submit" className="h-12 bg-primary-500 px-6 font-bold uppercase text-white hover:bg-primary-500-temp">
+              <button type="submit" className="h-12 bg-primary-500 px-6 font-bold uppercase text-white hover:bg-primary-600">
                 OK
               </button>
               <button type="button" onClick={() => setShowSearch(false)} className="grid h-12 w-10 place-items-center text-neutral-500" aria-label="Fermer">
@@ -172,7 +170,7 @@ const Navbar = () => {
               <Link
                 to="/order-insertion"
                 onClick={() => setIsOpen(false)}
-                className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold text-white hover:bg-primary-500"
+                className="mt-5 block bg-primary-500 px-6 py-4 text-center font-display text-sm font-bold uppercase tracking-[0.06em] text-white transition-colors duration-150 hover:bg-primary-600"
               >
                 Commander une insertion
               </Link>

@@ -1,9 +1,9 @@
 import React from 'react';
 import Skeleton from './Skeleton';
 
-const ArticleCardSkeleton = ({ featured = false }) => {
+const ArticleCardSkeleton = () => {
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl bg-white shadow-lg border border-neutral-100 h-[380px]">
+    <div className="flex h-[380px] flex-col overflow-hidden border border-neutral-200 bg-white">
       {/* Image Skeleton - 180px comme les vraies cartes */}
       <Skeleton className="h-[180px] w-full rounded-none flex-shrink-0" />
       

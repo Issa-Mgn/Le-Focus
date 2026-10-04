@@ -135,7 +135,7 @@ const AdminSettings = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="flex items-center gap-2 bg-primary-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-500-temp transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 bg-primary-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>Enregistrement...</>

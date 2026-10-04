@@ -25,7 +25,7 @@ const AdminLogin = () => {
       } else {
         setError('Identifiants incorrects');
       }
-    } catch (err) {
+    } catch {
       setError('Erreur de connexion');
     } finally {
       setLoading(false);
@@ -107,7 +107,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-500 text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-500-temp/20 flex items-center justify-center gap-2"
+              className="w-full bg-primary-500 text-white py-3 rounded-lg font-bold hover:bg-primary-800 transition-colors shadow-lg shadow-primary-600/20 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="animate-spin" size={20} /> : 'Se connecter'}
             </button>

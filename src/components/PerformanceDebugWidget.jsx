@@ -56,7 +56,7 @@ const PerformanceDebugWidget = () => {
       {/* Bouton toggle */}
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-primary-500 to-primary-500-temp text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+        className="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-primary-500 to-primary-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
         title="Performance Metrics"
       >
         <Activity size={20} />
@@ -140,7 +140,7 @@ const PerformanceDebugWidget = () => {
             <div className="flex items-center justify-between pt-3 border-t border-white/10">
               <span className="text-neutral-300">Cache Status</span>
               <span className={`font-bold ${metrics.cacheHit ? 'text-green-400' : 'text-red-400'}`}>
-                {metrics.cacheHit ? '✓ Active' : '✗ Inactive'}
+                {metrics.cacheHit ? 'Active' : 'Inactive'}
               </span>
             </div>
           </div>

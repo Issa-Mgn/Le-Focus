@@ -131,7 +131,7 @@ const Home = () => {
             
             {/* Badge À LA UNE */}
             <div className="absolute top-5 left-5 z-10">
-              <span className="bg-primary-500 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-lg">
+              <span className="bg-primary-500 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.18em] text-white">
                 À LA UNE
               </span>
             </div>
@@ -225,7 +225,7 @@ const Home = () => {
               placeholder="votre@email.com"
               className="min-w-0 flex-1 border border-neutral-700 bg-neutral-800 px-5 py-3 font-display text-sm text-white outline-none placeholder:text-neutral-500 focus:border-primary-500"
             />
-            <button disabled={isSubscribing} className="bg-primary-500 px-7 font-display text-sm font-bold text-white hover:bg-primary-500-temp disabled:opacity-70">
+            <button disabled={isSubscribing} className="bg-primary-500 px-7 font-display text-sm font-bold text-white hover:bg-primary-600 disabled:opacity-70">
               OK
             </button>
           </form>

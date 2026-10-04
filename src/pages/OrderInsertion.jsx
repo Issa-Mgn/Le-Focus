@@ -85,7 +85,7 @@ const OrderInsertion = () => {
               <textarea name="message" value={formData.message} onChange={handleChange} rows={7} className="focus-input resize-none" />
             </div>
 
-            <button className="w-full bg-primary-500 px-8 py-5 font-display text-base font-bold text-white hover:bg-primary-500-temp">
+            <button className="w-full bg-primary-500 px-8 py-5 font-display text-base font-bold text-white hover:bg-primary-600">
               Envoyer la demande
             </button>
           </form>

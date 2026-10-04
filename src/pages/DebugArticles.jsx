@@ -8,7 +8,7 @@ const DebugArticles = () => {
   useEffect(() => {
     const loadedArticles = getArticles();
     setArticles(loadedArticles);
-    console.log('📚 Articles chargés:', loadedArticles);
+    console.log('Articles chargés:', loadedArticles);
   }, []);
 
   const clearLocalStorage = () => {

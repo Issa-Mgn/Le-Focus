@@ -43,7 +43,7 @@ const CustomAlert = ({ show, type = 'success', message, onClose, duration = 3000
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="fixed top-4 right-4 z-[9999] max-w-md"
         >
-          <div className={`${colors[type]} border-2 rounded-2xl shadow-2xl p-4 flex items-start gap-4 backdrop-blur-sm`}>
+          <div className={`${colors[type]} flex items-start gap-4 border p-4 shadow-lg`}>
             <div className={iconColors[type]}>
               {icons[type]}
             </div>

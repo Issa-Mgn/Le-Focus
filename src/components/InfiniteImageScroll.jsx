@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Calendar, ImageIcon, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -8,12 +8,12 @@ const InfiniteImageScroll = ({ article }) => {
   const [direction, setDirection] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
 
-  if (!article) return null;
-
   // Préparer la liste des images (Couverture + Galerie)
-  const images = article.images && article.images.length > 0 
-    ? article.images 
-    : (article.image ? [article.image] : ['https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1600']);
+  const images = useMemo(() => {
+    if (article?.images && article.images.length > 0) return article.images;
+    if (article?.image) return [article.image];
+    return ['https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1600'];
+  }, [article]);
 
   // Précharger les images adjacentes pour une navigation fluide
   useEffect(() => {
@@ -64,10 +64,13 @@ const InfiniteImageScroll = ({ article }) => {
   useEffect(() => {
     if (images.length <= 1) return;
     const timer = setInterval(() => {
-      paginate(1);
-    }, 5000); 
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
     return () => clearInterval(timer);
-  }, [currentIndex, images.length]);
+  }, [images.length]);
+
+  if (!article) return null;
 
   const swipeConfidenceThreshold = 10000;
   const swipePower = (offset, velocity) => {

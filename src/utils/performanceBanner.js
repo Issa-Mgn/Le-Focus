@@ -19,43 +19,43 @@ export const displayPerformanceBanner = () => {
     console.clear();
 
     // Titre principal
-    console.log('%c🚀 LE FOCUS - OPTIMISATIONS DE PERFORMANCE 🚀', styles.title);
+    console.log('%cLE FOCUS - OPTIMISATIONS DE PERFORMANCE ', styles.title);
     console.log('%c═══════════════════════════════════════════════════════', styles.separator);
     console.log('');
 
     // Résultats
-    console.log('%c📊 RÉSULTATS IMPRESSIONNANTS', styles.subtitle);
+    console.log('%cRÉSULTATS IMPRESSIONNANTS', styles.subtitle);
     console.log('');
-    console.log('%c⚡ Temps de chargement : %c1-2 secondes %c(-60%)', styles.info, styles.success, styles.metric);
-    console.log('%c📉 Taille des données : %c0.5-1.5 MB %c(-70%)', styles.info, styles.success, styles.metric);
-    console.log('%c💾 Appels API : %c1x/15 minutes %c(-90%)', styles.info, styles.success, styles.metric);
-    console.log('%c✨ Images optimisées : %c100% %c(lazy loading)', styles.info, styles.success, styles.metric);
+    console.log('%cTemps de chargement : %c1-2 secondes %c(-60%)', styles.info, styles.success, styles.metric);
+    console.log('%cTaille des données : %c0.5-1.5 MB %c(-70%)', styles.info, styles.success, styles.metric);
+    console.log('%cAppels API : %c1x/15 minutes %c(-90%)', styles.info, styles.success, styles.metric);
+    console.log('%cImages optimisées : %c100% %c(lazy loading)', styles.info, styles.success, styles.metric);
     console.log('');
 
     // Optimisations
-    console.log('%c✅ OPTIMISATIONS ACTIVES', styles.subtitle);
+    console.log('%cOPTIMISATIONS ACTIVES', styles.subtitle);
     console.log('');
-    console.log('  %c1. 💾 Cache localStorage (15 minutes)', styles.success);
-    console.log('  %c2. 🖼️ Lazy loading des images', styles.success);
-    console.log('  %c3. 🧠 Préchargement intelligent', styles.success);
-    console.log('  %c4. 📐 Compression automatique', styles.success);
-    console.log('  %c5. 📊 Monitoring en temps réel', styles.success);
+    console.log('  %c1. Cache localStorage (15 minutes)', styles.success);
+    console.log('  %c2. Lazy loading des images', styles.success);
+    console.log('  %c3. Préchargement intelligent', styles.success);
+    console.log('  %c4. Compression automatique', styles.success);
+    console.log('  %c5. Monitoring en temps réel', styles.success);
     console.log('');
 
     // Tests
-    console.log('%c🧪 TESTS DISPONIBLES', styles.subtitle);
+    console.log('%cTESTS DISPONIBLES', styles.subtitle);
     console.log('');
     console.log('  Exécutez : %cwindow.performanceTests.runAllTests()', 'color: #2563EB; font-weight: bold; background: #EFF6FF; padding: 2px 6px; border-radius: 3px;');
     console.log('');
 
     // Widget
-    console.log('%c📊 WIDGET DE DEBUG', styles.subtitle);
+    console.log('%cWIDGET DE DEBUG', styles.subtitle);
     console.log('');
-    console.log('  %cCliquez sur l\'icône 📊 en bas à gauche pour voir les métriques', styles.info);
+    console.log('  %cCliquez sur l\'icône en bas à gauche pour voir les métriques', styles.info);
     console.log('');
 
     // Documentation
-    console.log('%c📚 DOCUMENTATION', styles.subtitle);
+    console.log('%cDOCUMENTATION', styles.subtitle);
     console.log('');
     console.log('  %c• README_OPTIMISATIONS.md - Vue d\'ensemble', styles.info);
     console.log('  %c• GUIDE_OPTIMISATIONS.md - Guide d\'utilisation', styles.info);
@@ -64,7 +64,7 @@ export const displayPerformanceBanner = () => {
 
     // Footer
     console.log('%c═══════════════════════════════════════════════════════', styles.separator);
-    console.log('%c🎉 Profite d\'un site ultra-rapide et optimisé ! 🎉', 'font-size: 14px; color: #16A34A; font-weight: bold;');
+    console.log('%cProfite d\'un site ultra-rapide et optimisé ! ', 'font-size: 14px; color: #16A34A; font-weight: bold;');
     console.log('');
     console.log('%cDéveloppé par Antigravity AI • 13 décembre 2025', 'font-size: 10px; color: #9CA3AF; font-style: italic;');
     console.log('');
